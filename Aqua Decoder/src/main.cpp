@@ -21,14 +21,6 @@ size_t getFilesize(std::string filepath)
     return fileSize;
 }
 
-void shifWithConstantSize(uint8_t *arr, int pos, int length)
-{
-    for (int i = 0; i < length - pos; i++)
-    {
-        arr[i] = arr[pos + i];
-    }
-}
-
 // Processing buffer size
 #define BUFFER_SIZE (1024 * 8)
 
@@ -37,30 +29,6 @@ template <typename T>
 inline bool getBit(T data, int bit)
 {
     return (data >> bit) & 1;
-}
-
-std::array<uint8_t, 4> nrzmEncode(std::array<uint8_t, 4> in, int b)
-{
-    std::array<uint8_t, 4> out;
-
-    // Iterate over bytes
-    for (unsigned i = 0; i < in.size(); i++)
-    {
-        out[i] = 0;
-
-        // Iterate over bits
-        for (unsigned j = 0; j < 8; j++)
-        {
-            auto bit = (in[i] >> (7 - j)) & 0x1;
-            if (bit)
-            {
-                // Bit is 1; flip
-                b = 1 - b;
-            }
-            out[i] = (out[i] << 1) | (b & 0x1);
-        }
-    }
-    return out;
 }
 
 // Clamp symbols
