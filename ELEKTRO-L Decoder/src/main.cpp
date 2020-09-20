@@ -3,6 +3,7 @@
 #include <complex>
 #include <vector>
 #include "msu_reader.h"
+#include "msu_ir_reader.h"
 #include "simpledeframer.h"
 
 // Return filesize
@@ -33,10 +34,12 @@ int main(int argc, char *argv[])
 
     // Deframers and decoders
     MSUReader msuReader1, msuReader2, msuReader3;
-    SimpleDeframer<uint64_t, 64, 121680, 0x0218a7a392dd9abf> msuDefra1, msuDefra2, msuDefra3;
+    MSUReaderIR msuReaderIR;
+    SimpleDeframer<uint64_t, 64, 121680, 0x0218a7a392dd9abf> msuDefra1, msuDefra2, msuDefra3; // High-res Channels
+    SimpleDeframer<uint64_t, 64, 14560, 0x0218a7a392dd9abf> msuDefra4;                        // Low-res channels
 
     // Counters
-    int channe1_frames = 0, channe2_frames = 0, channe3_frames = 0;
+    int channe1_frames = 0, channe2_frames = 0, channe3_frames = 0, channe4_frames = 0;
 
     // Graphics
     std::cout << "---------------------------" << std::endl;
@@ -86,6 +89,16 @@ int main(int argc, char *argv[])
             for (std::vector<uint8_t> &frame : msu)
                 msuReader3.pushFrame(&frame[0]);
         }
+        else if (vcid == 105)
+        {
+            // Extract content, deframe, and push into decoder
+            std::vector<uint8_t> defraVec;
+            defraVec.insert(defraVec.end(), &buffer[24], &buffer[24] + (1024 - 24));
+            std::vector<std::vector<uint8_t>> msu = msuDefra4.work(defraVec);
+            channe4_frames += msu.size();
+            for (std::vector<uint8_t> &frame : msu)
+                msuReaderIR.pushFrame(&frame[0]);
+        }
 
         // Show our progress
         std::cout << "\rProgress : " << round(((float)data_in.tellg() / (float)filesize) * 1000.0f) / 10.0f << "%     " << std::flush;
@@ -97,15 +110,23 @@ int main(int argc, char *argv[])
     std::cout << "Channel 1 lines : " << channe1_frames << std::endl;
     std::cout << "Channel 2 lines : " << channe2_frames << std::endl;
     std::cout << "Channel 3 lines : " << channe3_frames << std::endl;
+    std::cout << "Low-res channels frames : " << channe4_frames << std::endl;
 
     std::cout << std::endl;
 
     // Write images out
-    std::cout << "Writing images..." << std::endl;
+    std::cout << "Writing images... (Can take a while)" << std::endl;
 
     cimg_library::CImg<unsigned short> image1 = msuReader1.getImage();
     cimg_library::CImg<unsigned short> image2 = msuReader2.getImage();
     cimg_library::CImg<unsigned short> image3 = msuReader3.getImage();
+    cimg_library::CImg<unsigned short> image4 = msuReaderIR.getImage1();
+    cimg_library::CImg<unsigned short> image5 = msuReaderIR.getImage2();
+    cimg_library::CImg<unsigned short> image6 = msuReaderIR.getImage3();
+    cimg_library::CImg<unsigned short> image7 = msuReaderIR.getImage4();
+    cimg_library::CImg<unsigned short> image8 = msuReaderIR.getImage5();
+    cimg_library::CImg<unsigned short> image9 = msuReaderIR.getImage6();
+    //cimg_library::CImg<unsigned short> imageIRRaw = msuReaderIR.getImageRaw();
 
     // Takes a while so we say how we're doing
     std::cout << "Channel 1..." << std::endl;
@@ -116,6 +137,27 @@ int main(int argc, char *argv[])
 
     std::cout << "Channel 3..." << std::endl;
     image3.save_png("Elektro-3.png");
+
+    std::cout << "Channel 4..." << std::endl;
+    image4.save_png("Elektro-4.png");
+
+    std::cout << "Channel 5..." << std::endl;
+    image5.save_png("Elektro-5.png");
+
+    std::cout << "Channel 6..." << std::endl;
+    image6.save_png("Elektro-6.png");
+
+    std::cout << "Channel 7..." << std::endl;
+    image7.save_png("Elektro-7.png");
+
+    std::cout << "Channel 8..." << std::endl;
+    image8.save_png("Elektro-8.png");
+
+    std::cout << "Channel 9..." << std::endl;
+    image9.save_png("Elektro-9.png");
+
+    //std::cout << "Channel RAW IR..." << std::endl;
+    //imageIRRaw.save_png("Elektro-RAW-IR.png");
 
     data_in.close();
 }
