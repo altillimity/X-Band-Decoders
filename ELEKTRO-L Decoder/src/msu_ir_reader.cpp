@@ -32,7 +32,6 @@ MSUReaderIR::~MSUReaderIR()
     delete[] finalImageBuffer4;
     delete[] imageBuffer5;
     delete[] finalImageBuffer5;
-    delete[] imageBuffer6;
     delete[] finalImageBuffer6;
 }
 
@@ -189,8 +188,9 @@ cimg_library::CImg<unsigned short> MSUReaderIR::getImage6()
     {
         for (int ii = 0; ii < 16; ii++)
         {
-            std::memcpy(&finalImageBuffer6[3388 * i + (ii)*184], &imageBuffer6[(10100 + (ii * 2) * 3401 + i) * 184], 184 * 2);
-            //std::memcpy(&finalImageBuffer1[((11008 * 3388) - (11008 * i)) + (ii * 2 + 1) * 184], &imageBuffer1[(10219 + (ii * 2 + 1)* 3388 + i) * 184], 184 * 2);
+            // Channel 9 is different for some reason...
+            std::memcpy(&finalImageBuffer6[3388 * i + (ii * 2) * 184 / 2], &imageBuffer6[(10100 + (ii * 2) * 3401 + i) * 184], 184);
+            std::memcpy(&finalImageBuffer6[((3388 * 3388) - (3388 * i)) + (ii * 2 + 1) * 184 / 2], &imageBuffer6[(10300 + (ii * 2 + 1) * 3401 + i) * 184], 184);
         }
     }
 
