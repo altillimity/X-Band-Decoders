@@ -186,12 +186,12 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    gain_mu: '0.175'
-    gain_omega: 0.25*0.175*0.175
+    gain_mu: '8.7e-3'
+    gain_omega: 8.7e-3**2/4.0
     maxoutbuf: '0'
     minoutbuf: '0'
     mu: '0.5'
-    omega: sps*(1+0.0)
+    omega: sps
     omega_relative_limit: '0.005'
     type: complex
   states:
