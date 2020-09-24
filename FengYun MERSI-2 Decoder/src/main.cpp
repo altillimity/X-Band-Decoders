@@ -283,9 +283,14 @@ int main(int argc, char *argv[])
     // Output a few nice composites as well
     std::cout << "221 Composite..." << std::endl;
     cimg_library::CImg<unsigned short> image221(8192, std::max(image1.height(), image2.height()), 1, 3);
-    image221.draw_image(0, 0, 0, 0, image2);
-    image221.draw_image(0, 0, 0, 1, image2);
-    image221.draw_image(0, 0, 0, 2, image1);
+    {
+        cimg_library::CImg<unsigned short> tempImage2 = image2, tempImage1 = image1;
+        tempImage2.equalize(1000);
+        tempImage1.equalize(1000);
+        image221.draw_image(0, 0, 0, 0, tempImage2);
+        image221.draw_image(0, 0, 0, 1, tempImage2);
+        image221.draw_image(0, 0, 0, 2, tempImage1);
+    }
     image221.save_png("MERSI2-RGB-221.png");
 
     std::cout << "341 Composite..." << std::endl;
