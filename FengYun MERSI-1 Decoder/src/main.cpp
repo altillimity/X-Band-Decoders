@@ -279,10 +279,10 @@ int main(int argc, char *argv[])
         tempImage2.equalize(1000);
         tempImage1.equalize(1000);
         // Correct for offset... Kinda bad
-        image3241.draw_image(25, 25, 0, 0, tempImage3);
-        image3241.draw_image(17, 4, 0, 1, tempImage2, 0.93f + 0.5f);
+        image3241.draw_image(25, 0, 0, 0, tempImage3);
+        image3241.draw_image(17, 0, 0, 1, tempImage2, 0.93f + 0.5f);
         image3241.draw_image(0, 0, 0, 1, tempImage4, 0.57f);
-        image3241.draw_image(22, -44, 0, 2, tempImage1);
+        image3241.draw_image(22, 0, 0, 2, tempImage1);
     }
     image3241.save_png("MERSI1-RGB-3(24)1.png");
 

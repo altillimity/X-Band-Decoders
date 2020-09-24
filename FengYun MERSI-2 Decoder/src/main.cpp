@@ -332,7 +332,7 @@ int main(int argc, char *argv[])
         image321t.draw_image(0, 0, 0, 2, tempImage1);
     }
     image321t.save_png("MERSI2-RGB-654.png");*/
-
+    
     std::cout << "3(24)1 Composite..." << std::endl;
     cimg_library::CImg<unsigned short> image3241(8192, std::max(image3.height(), std::max(image2.height(), image3.height())), 1, 3);
     {
@@ -342,10 +342,10 @@ int main(int argc, char *argv[])
         tempImage2.equalize(1000);
         tempImage1.equalize(1000);
         // Correct for offset... Kinda bad
-        image3241.draw_image(25, 5, 0, 0, tempImage3);
-        image3241.draw_image(17, 4, 0, 1, tempImage2, 0.93f + 0.5f);
+        image3241.draw_image(25, 0, 0, 0, tempImage3);
+        image3241.draw_image(17, 0, 0, 1, tempImage2, 0.93f + 0.5f);
         image3241.draw_image(0, 0, 0, 1, tempImage4, 0.57f);
-        image3241.draw_image(26, -32, 0, 2, tempImage1);
+        image3241.draw_image(26, 0, 0, 2, tempImage1);
     }
     image3241.save_png("MERSI2-RGB-3(24)1.png");
 
@@ -355,6 +355,25 @@ int main(int argc, char *argv[])
     image171918.draw_image(0, 0, 0, 1, image19);
     image171918.draw_image(0, 0, 0, 2, image18);
     image171918.save_png("MERSI2-RGB-18.19.17.png");
+
+    std::cout << "9.12.11 Composite..." << std::endl;
+    cimg_library::CImg<unsigned short> image91211(2048, std::max(image19.height(), std::max(image12.height(), image9.height())), 1, 3);
+    {
+        cimg_library::CImg<unsigned short> tempImage9 = image9, tempImage11 = image11, tempImage12 = image12;
+        tempImage9.equalize(1000);
+        for (unsigned short &px : tempImage9)
+            px = std::numeric_limits<unsigned short>::max() - px;
+        tempImage12.equalize(1000);
+        for (unsigned short &px : tempImage12)
+            px = std::numeric_limits<unsigned short>::max() - px;
+        tempImage11.equalize(1000);
+        for (unsigned short &px : tempImage11)
+            px = std::numeric_limits<unsigned short>::max() - px;
+        image91211.draw_image(0, 0, 0, 0, tempImage9);
+        image91211.draw_image(-9, 0, 0, 1, tempImage12);
+        image91211.draw_image(0, 0, 0, 2, tempImage11);
+    }
+    image91211.save_png("MERSI2-RGB-9.12.11.png");
 
     data_in.close();
 }
