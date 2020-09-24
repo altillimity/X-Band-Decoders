@@ -333,6 +333,22 @@ int main(int argc, char *argv[])
     }
     image321t.save_png("MERSI2-RGB-654.png");*/
 
+    std::cout << "3(24)1 Composite..." << std::endl;
+    cimg_library::CImg<unsigned short> image3241(8192, std::max(image3.height(), std::max(image2.height(), image3.height())), 1, 3);
+    {
+        cimg_library::CImg<unsigned short> tempImage4 = image4, tempImage3 = image3, tempImage2 = image2, tempImage1 = image1;
+        tempImage4.equalize(1000);
+        tempImage3.equalize(1000);
+        tempImage2.equalize(1000);
+        tempImage1.equalize(1000);
+        // Correct for offset... Kinda bad
+        image3241.draw_image(25, 5, 0, 0, tempImage3);
+        image3241.draw_image(17, 4, 0, 1, tempImage2, 0.93f + 0.5f);
+        image3241.draw_image(0, 0, 0, 1, tempImage4, 0.57f);
+        image3241.draw_image(26, -32, 0, 2, tempImage1);
+    }
+    image3241.save_png("MERSI2-RGB-3(24)1.png");
+
     std::cout << "17.19.18 Composite..." << std::endl;
     cimg_library::CImg<unsigned short> image171918(2048, std::max(image17.height(), std::max(image18.height(), image19.height())), 1, 3);
     image171918.draw_image(0, 0, 0, 0, image17);
