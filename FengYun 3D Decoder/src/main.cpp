@@ -234,7 +234,7 @@ int main(int argc, char *argv[])
                     for (int i = 0; i < 4; i++)
                     {
                         reedSolomon.deinterleave(&cadu[4], rsWorkBuffer, i, 4);
-                        errors = reedSolomon.decode_rs8(rsWorkBuffer);
+                        errors = reedSolomon.decode_ccsds(rsWorkBuffer);
                         reedSolomon.interleave(rsWorkBuffer, &cadu[4], i, 4);
                     }
 

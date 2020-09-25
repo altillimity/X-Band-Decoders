@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     if (argc < 3)
     {
         std::cout << "Usage : " << argv[0] << " -b -v 0.165 -o 5 inputfile.bin outputframes.bin" << std::endl;
-        std::cout << "		    -v (viterbi treshold(default: 0.170))" << std::endl;
+        std::cout << "		    -v (viterbi treshold(default: 0.150))" << std::endl;
         std::cout << "		    -o (outsinc after decode frame number(default: 5))" << std::endl;
         std::cout << "2020-08-15." << std::endl;
         return 1;
@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 
     // Variables
     int viterbi_outsync_after = 5;
-    float viterbi_ber_threasold = 0.170;
+    float viterbi_ber_threasold = 0.150;
     int sw = 0;
 
     while ((sw = getopt(argc, argv, "bco:v:")) != -1)
@@ -236,7 +236,7 @@ int main(int argc, char *argv[])
                     for (int i = 0; i < 4; i++)
                     {
                         reedSolomon.deinterleave(&cadu[4], rsWorkBuffer, i, 4);
-                        errors = reedSolomon.decode_rs8(rsWorkBuffer);
+                        errors = reedSolomon.decode_ccsds(rsWorkBuffer);
                         reedSolomon.interleave(rsWorkBuffer, &cadu[4], i, 4);
                     }
 
