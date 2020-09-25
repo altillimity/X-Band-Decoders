@@ -172,7 +172,7 @@ int main(int argc, char *argv[])
     image15.mirror('y');
 
     // Takes a while so we say how we're doing
-    /*std::cout << "Channel 1..." << std::endl;
+    std::cout << "Channel 1..." << std::endl;
     image1.save_png("MERSI1-1.png");
 
     std::cout << "Channel 2..." << std::endl;
