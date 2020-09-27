@@ -14,6 +14,8 @@
 #include "viterbi.h"
 #include "diff.h"
 
+#include "ctpl/ctpl_stl.h"
+
 // Processing buffer size
 #define BUFFER_SIZE (8192 * 5)
 
@@ -44,6 +46,12 @@ int main(int argc, char *argv[])
         std::cout << "2020-08-15." << std::endl;
         return 1;
     }
+
+    // Multithreading stuff
+    ctpl::thread_pool viterbi_pool(2);
+    std::future<void> v1_fut, v2_fut;
+
+    int v1, v2;
 
     // Variables
     int viterbi_outsync_after = 5;
@@ -130,8 +138,10 @@ int main(int argc, char *argv[])
             qSamples->push_back(-qS); //FY3D
         }
         // Run Viterbi!
-        int v1 = viterbi1.work(*qSamples, qSamples->size(), viterbi1_out);
-        int v2 = viterbi2.work(*iSamples, iSamples->size(), viterbi2_out);
+        v1_fut = viterbi_pool.push([&](int) { v1 = viterbi1.work(*qSamples, qSamples->size(), viterbi1_out); });
+        v2_fut = viterbi_pool.push([&](int) { v2 = viterbi2.work(*iSamples, iSamples->size(), viterbi2_out); });
+        v1_fut.get();
+        v2_fut.get();
 
         // Interleave and pack output into 2 bits chunks
         if (v1 > 0 || v2 > 0)
@@ -174,8 +184,10 @@ int main(int argc, char *argv[])
                 qSamples->push_back(-qS); //FY3D
             }
             // Run Viterbi!
-            int v1 = viterbi1.work(*qSamples, qSamples->size(), viterbi1_out);
-            int v2 = viterbi2.work(*iSamples, iSamples->size(), viterbi2_out);
+            v1_fut = viterbi_pool.push([&](int) { v1 = viterbi1.work(*qSamples, qSamples->size(), viterbi1_out); });
+            v2_fut = viterbi_pool.push([&](int) { v2 = viterbi2.work(*iSamples, iSamples->size(), viterbi2_out); });
+            v1_fut.get();
+            v2_fut.get();
 
             // Interleave and pack output into 2 bits chunks
             if (v1 > 0 || v2 > 0)
