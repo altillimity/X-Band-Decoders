@@ -14,6 +14,8 @@
 #include "viterbi.h"
 #include "diff.h"
 
+#include "ctpl/ctpl_stl.h"
+
 // Processing buffer size
 #define BUFFER_SIZE (8192 * 5)
 
@@ -39,15 +41,21 @@ int main(int argc, char *argv[])
     if (argc < 3)
     {
         std::cout << "Usage : " << argv[0] << " -b -v 0.165 -o 5 inputfile.bin outputframes.bin" << std::endl;
-        std::cout << "		    -v (viterbi treshold(default: 0.200))" << std::endl;
+        std::cout << "		    -v (viterbi treshold(default: 0.150))" << std::endl;
         std::cout << "		    -o (outsinc after decode frame number(default: 5))" << std::endl;
         std::cout << "2020-08-15." << std::endl;
         return 1;
     }
 
+    // Multithreading stuff
+    ctpl::thread_pool viterbi_pool(2);
+    std::future<void> v1_fut, v2_fut;
+
+    int v1, v2;
+
     // Variables
     int viterbi_outsync_after = 5;
-    float viterbi_ber_threasold = 0.200;
+    float viterbi_ber_threasold = 0.150;
     int sw = 0;
 
     while ((sw = getopt(argc, argv, "bco:v:")) != -1)
@@ -107,7 +115,7 @@ int main(int argc, char *argv[])
     std::cout << "---------------------------" << std::endl;
     std::cout << std::endl;
 
-    int shift = 0;
+    int shift = 0, nosyncruns = 0, syncedruns = 0;
 
     uint8_t frameBuffer[BUFFER_SIZE];
     int inFrameBuffer = 0;
@@ -131,8 +139,10 @@ int main(int argc, char *argv[])
             qSamples->push_back(-qS);
         }
         // Run Viterbi!
-        int v1 = viterbi1.work(*qSamples, qSamples->size(), viterbi1_out);
-        int v2 = viterbi2.work(*iSamples, iSamples->size(), viterbi2_out);
+        v1_fut = viterbi_pool.push([&](int) { v1 = viterbi1.work(*qSamples, qSamples->size(), viterbi1_out); });
+        v2_fut = viterbi_pool.push([&](int) { v2 = viterbi2.work(*iSamples, iSamples->size(), viterbi2_out); });
+        v1_fut.get();
+        v2_fut.get();
 
         // Interleave and pack output into 2 bits chunks
         if (v1 > 0 || v2 > 0)
@@ -176,8 +186,10 @@ int main(int argc, char *argv[])
             }
 
             // Run Viterbi!
-            int v1 = viterbi1.work(*qSamples, qSamples->size(), viterbi1_out);
-            int v2 = viterbi2.work(*iSamples, iSamples->size(), viterbi2_out);
+            v1_fut = viterbi_pool.push([&](int) { v1 = viterbi1.work(*qSamples, qSamples->size(), viterbi1_out); });
+            v2_fut = viterbi_pool.push([&](int) { v2 = viterbi2.work(*iSamples, iSamples->size(), viterbi2_out); });
+            v1_fut.get();
+            v2_fut.get();
 
             // Interleave and pack output into 2 bits chunks
             if (v1 > 0 || v2 > 0)
@@ -256,6 +268,65 @@ int main(int argc, char *argv[])
         else if (deframer.getState() > 6)
             std::cout << ", Deframer : SYNCED" << std::flush;
         std::cout << ", CADUs : " << (float)(data_out_total / 1024) << ", Data out : " << round(data_out_total / 1e5) / 10.0f << " MB, Progress : " << round(((float)data_in.tellg() / (float)filesize) * 1000.0f) / 10.0f << "%     " << std::flush;
+
+        // Count for how many buffers we've been in NOSYNC
+        if (deframer.getState() == 0)
+        {
+            nosyncruns++;
+            syncedruns = 0;
+        }
+        else
+            nosyncruns = 0;
+
+        if (deframer.getState() > 6)
+        {
+            syncedruns++;
+        }
+
+        if (syncedruns > 20)
+        {
+            viterbi1.d_ber_threshold = 0.200;
+            viterbi2.d_ber_threshold = 0.200;
+        }
+        else
+        {
+            viterbi1.d_ber_threshold = viterbi_ber_threasold;
+            viterbi2.d_ber_threshold = viterbi_ber_threasold;
+        }
+
+        // Try to correct for different phase ambiguities that would mess things up
+        if (nosyncruns > 4)
+        {
+            if (shift)
+            {
+                shift = 0;
+            }
+            else
+            {
+                shift = 1;
+            }
+        }
+        else if (nosyncruns > 8)
+        {
+            viterbi1.switchInv = !viterbi1.switchInv;
+            viterbi2.switchInv = !viterbi2.switchInv;
+        }
+        else if (nosyncruns > 12)
+        {
+            viterbi1.switchInv = true;
+            viterbi2.switchInv = false;
+        }
+        else if (nosyncruns > 16)
+        {
+            viterbi1.switchInv = false;
+            viterbi2.switchInv = true;
+        }
+        else if (nosyncruns > 20)
+        {
+            viterbi1.switchInv = false;
+            viterbi2.switchInv = false;
+            nosyncruns = 1;
+        }
 
         // Clear everything for the next run
         diff_in->clear();

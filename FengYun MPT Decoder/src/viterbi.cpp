@@ -27,6 +27,8 @@ FengyunViterbi::FengyunViterbi(bool sync_check, float ber_threshold, int insync_
 
     do_reset();
     enter_idle();
+
+    switchInv = false;
 }
 
 /*
@@ -105,11 +107,11 @@ float FengyunViterbi::ber_calc1(
     //depuncturing is included here
     for (unsigned int i = 0; i < symsnr; i++)
     {
-        viterbi_in[bits % 4] = insymbols_I[i];
-        insymbols_interleaved_depunctured[bits] = insymbols_I[i];
+        viterbi_in[bits % 4] = switchInv ? -insymbols_I[i] : insymbols_I[i];
+        insymbols_interleaved_depunctured[bits] = switchInv ? -insymbols_Q[i] : insymbols_I[i];
         bits++;
-        viterbi_in[bits % 4] = -insymbols_Q[i];
-        insymbols_interleaved_depunctured[bits] = -insymbols_Q[i];
+        viterbi_in[bits % 4] = switchInv ? insymbols_Q[i] : -insymbols_Q[i];
+        insymbols_interleaved_depunctured[bits] = switchInv ? insymbols_I[i] : -insymbols_Q[i];
 
         if ((bits % 4) == 3)
         {
@@ -311,9 +313,9 @@ int FengyunViterbi::work(std::vector<std::complex<float>> &in_syms, size_t size,
         {
 
             d_even_symbol = true;
-            d_viterbi_in[d_bits % 4] = input_symbols_buffer_I_ph[i];
+            d_viterbi_in[d_bits % 4] = switchInv ? -input_symbols_buffer_Q_ph[i] : input_symbols_buffer_I_ph[i];
             d_bits++;
-            d_viterbi_in[d_bits % 4] = -input_symbols_buffer_Q_ph[i];
+            d_viterbi_in[d_bits % 4] = switchInv ? input_symbols_buffer_I_ph[i] : -input_symbols_buffer_Q_ph[i];
             if ((d_bits % 4) == 3)
             {
                 // Every fourth symbol, perform butterfly operation

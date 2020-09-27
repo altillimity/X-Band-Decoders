@@ -12,7 +12,7 @@ class FengyunViterbi
 {
 private:
     bool d_sync_check;
-    float d_ber_threshold;
+    //float d_ber_threshold;
     int d_insync_after;
     int d_outsync_after;
     int d_reset_after;
@@ -51,6 +51,9 @@ private:
     unsigned char d_state;
 
 public:
+    float d_ber_threshold;
+    bool switchInv;
+
     FengyunViterbi(bool sync_check, float ber_threshold, int insync_after, int outsync_after, int reset_after);
     ~FengyunViterbi();
 
