@@ -159,5 +159,19 @@ int main(int argc, char *argv[])
     //std::cout << "Channel RAW IR..." << std::endl;
     //imageIRRaw.save_png("Elektro-RAW-IR.png");
 
+    std::cout << "321 Composite..." << std::endl;
+    cimg_library::CImg<unsigned short> image321(12008, 12008, 1, 3);
+    image321.draw_image(0, 1774 - 4400, 0, 0, image3);
+    image321.draw_image(-31, -23 - 4400, 0, 1, image2);
+    image321.draw_image(22, 3574 - 4400, 0, 2, image1);
+    image321.save_png("Elektro-RGB-321.png");
+
+    std::cout << "221 Composite..." << std::endl;
+    cimg_library::CImg<unsigned short> image221(12008, 12008, 1, 3);
+    image221.draw_image(-31, -23 - 4400, 0, 0, image2);
+    image221.draw_image(-31, -23 - 4400, 0, 1, image2);
+    image221.draw_image(22, 3574 - 4400, 0, 2, image1);
+    image221.save_png("Elektro-RGB-221.png");
+
     data_in.close();
 }
