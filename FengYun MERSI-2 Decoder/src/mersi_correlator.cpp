@@ -27,6 +27,15 @@ void MERSICorrelator::makeImages()
     image13 = reader13.getImage();
     image14 = reader14.getImage();
     image15 = reader15.getImage();
+    image16 = reader16.getImage();
+    image17 = reader17.getImage();
+    image18 = reader18.getImage();
+    image19 = reader19.getImage();
+    image20 = reader20.getImage();
+    image21 = reader21.getImage();
+    image22 = reader22.getImage();
+    image23 = reader23.getImage();
+    image24 = reader24.getImage();
 
     // They all need to be flipped horizontally
     image1.mirror('y');
@@ -44,6 +53,15 @@ void MERSICorrelator::makeImages()
     image13.mirror('y');
     image14.mirror('y');
     image15.mirror('y');
+    image16.mirror('y');
+    image17.mirror('y');
+    image18.mirror('y');
+    image19.mirror('y');
+    image20.mirror('y');
+    image21.mirror('y');
+    image22.mirror('y');
+    image23.mirror('y');
+    image24.mirror('y');
 }
 
 void MERSICorrelator::processScan()
@@ -54,33 +72,49 @@ void MERSICorrelator::processScan()
     {
         int marker = (frameVec[3] % (int)pow(2, 3)) << 7 | frameVec[4] >> 1;
 
-        if (marker > 199)
+        if (marker > 239)
         {
             m1000Frames++;
 
             // Demultiplex them all!
             if (marker > 39 + 40 * 5 && marker < 39 + 40 * 5 + 10)
-                reader6.pushFrame(frameVec);
-            else if (marker > 39 + 40 * 5 + 10 * 2 && marker < 39 + 40 * 5 + 10 * (2 + 1))
                 reader7.pushFrame(frameVec);
-            else if (marker > 39 + 40 * 5 + 10 * 3 && marker < 39 + 40 * 5 + 10 * (3 + 1))
+            else if (marker > 39 + 40 * 5 + 10 * 2 && marker < 39 + 40 * 5 + 10 * (2 + 1))
                 reader8.pushFrame(frameVec);
-            else if (marker > 39 + 40 * 5 + 10 * 4 && marker < 39 + 40 * 5 + 10 * (4 + 1))
+            else if (marker > 39 + 40 * 5 + 10 * 3 && marker < 39 + 40 * 5 + 10 * (3 + 1))
                 reader9.pushFrame(frameVec);
-            else if (marker > 39 + 40 * 5 + 10 * 5 && marker < 39 + 40 * 5 + 10 * (5 + 1))
+            else if (marker > 39 + 40 * 5 + 10 * 4 && marker < 39 + 40 * 5 + 10 * (4 + 1))
                 reader10.pushFrame(frameVec);
-            else if (marker > 39 + 40 * 5 + 10 * 6 && marker < 39 + 40 * 5 + 10 * (6 + 1))
+            else if (marker > 39 + 40 * 5 + 10 * 5 && marker < 39 + 40 * 5 + 10 * (5 + 1))
                 reader11.pushFrame(frameVec);
-            else if (marker > 39 + 40 * 5 + 10 * 7 && marker < 39 + 40 * 5 + 10 * (7 + 1))
+            else if (marker > 39 + 40 * 5 + 10 * 6 && marker < 39 + 40 * 5 + 10 * (6 + 1))
                 reader12.pushFrame(frameVec);
-            else if (marker > 39 + 40 * 5 + 10 * 8 && marker < 39 + 40 * 5 + 10 * (8 + 1))
+            else if (marker > 39 + 40 * 5 + 10 * 7 && marker < 39 + 40 * 5 + 10 * (7 + 1))
                 reader13.pushFrame(frameVec);
-            else if (marker > 39 + 40 * 5 + 10 * 9 && marker < 39 + 40 * 5 + 10 * (9 + 1))
+            else if (marker > 39 + 40 * 5 + 10 * 8 && marker < 39 + 40 * 5 + 10 * (8 + 1))
                 reader14.pushFrame(frameVec);
-            else if (marker > 39 + 40 * 5 + 10 * 10 && marker < 39 + 40 * 5 + 10 * (10 + 1))
+            else if (marker > 39 + 40 * 5 + 10 * 9 && marker < 39 + 40 * 5 + 10 * (9 + 1))
                 reader15.pushFrame(frameVec);
+            else if (marker > 39 + 40 * 5 + 10 * 10 && marker < 39 + 40 * 5 + 10 * (10 + 1))
+                reader16.pushFrame(frameVec);
+            else if (marker > 39 + 40 * 5 + 10 * 11 && marker < 39 + 40 * 5 + 10 * (11 + 1))
+                reader17.pushFrame(frameVec);
+            else if (marker > 39 + 40 * 5 + 10 * 12 && marker < 39 + 40 * 5 + 10 * (12 + 1))
+                reader18.pushFrame(frameVec);
+            else if (marker > 39 + 40 * 5 + 10 * 13 && marker < 39 + 40 * 5 + 10 * (13 + 1))
+                reader19.pushFrame(frameVec);
+            else if (marker > 39 + 40 * 5 + 10 * 14 && marker < 39 + 40 * 5 + 10 * (14 + 1))
+                reader20.pushFrame(frameVec);
+            else if (marker > 39 + 40 * 5 + 10 * 15 && marker < 39 + 40 * 5 + 10 * (15 + 1))
+                reader21.pushFrame(frameVec);
+            else if (marker > 39 + 40 * 5 + 10 * 16 && marker < 39 + 40 * 5 + 10 * (16 + 1))
+                reader22.pushFrame(frameVec);
+            else if (marker > 39 + 40 * 5 + 10 * 17 && marker < 39 + 40 * 5 + 10 * (17 + 1))
+                reader23.pushFrame(frameVec);
+            else if (marker > 39 + 40 * 5 + 10 * 18 && marker < 39 + 40 * 5 + 10 * (18 + 1))
+                reader24.pushFrame(frameVec);
         }
-        else if (marker <= 199)
+        else if (marker <= 239)
         {
             m250Frames++;
 
@@ -95,6 +129,8 @@ void MERSICorrelator::processScan()
                 reader4.pushFrame(frameVec);
             else if (marker > 39 + 40 * 3 && marker < 39 + 40 * (3 + 1))
                 reader5.pushFrame(frameVec);
+            else if (marker > 39 + 40 * 4 && marker < 39 + 40 * (4 + 1))
+                reader6.pushFrame(frameVec);
         }
     }
 
@@ -120,7 +156,7 @@ void MERSICorrelator::feedFrames(int marker, std::vector<uint8_t> &data)
             scanBuffer.push_back(data); // Buffer it
 
             // Complete! Let's read it.
-            if (lastMarker == 349)
+            if (lastMarker == 429)
             {
                 processScan();
             }
