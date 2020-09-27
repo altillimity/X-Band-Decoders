@@ -173,5 +173,12 @@ int main(int argc, char *argv[])
     image221.draw_image(22, 3574 - 4400, 0, 2, image1);
     image221.save_png("Elektro-RGB-221.png");
 
+    std::cout << "332 Composite..." << std::endl;
+    cimg_library::CImg<unsigned short> image332(12008, 12008, 1, 3);
+    image332.draw_image(0, 1774 - 4400, 0, 0, image3);
+    image332.draw_image(0, 1774 - 4400, 0, 1, image3);
+    image332.draw_image(-31, -23 - 4400, 0, 2, image2);
+    image332.save_png("Elektro-RGB-332.png");
+
     data_in.close();
 }
