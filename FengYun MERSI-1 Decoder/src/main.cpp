@@ -6,6 +6,7 @@
 #include "mersi_deframer.h"
 #include "mersi_250m_reader.h"
 #include "mersi_1000m_reader.h"
+#include "mersi_correlator.h"
 
 // Return filesize
 size_t getFilesize(std::string filepath)
@@ -26,6 +27,10 @@ int main(int argc, char *argv[])
 
     // Deframer
     MersiDeframer mersiDefra;
+
+    // MERSI Correlator used to fix synchronise channels in composites
+    // It will only preserve full MERSI scans
+    MERSICorrelator mersiCorrelator;
 
     // MERSI Readers
     MERSI250Reader reader1, reader2, reader3, reader4, reader5;
@@ -75,6 +80,9 @@ int main(int argc, char *argv[])
             for (std::vector<uint8_t> frameVec : out)
             {
                 int marker = (frameVec[3] % (int)pow(2, 3)) << 7 | frameVec[4] >> 1;
+
+                mersiCorrelator.feedFrames(marker, frameVec);
+
                 //std::cout << marker << std::endl;
                 if (marker > 199)
                 {
@@ -132,6 +140,8 @@ int main(int argc, char *argv[])
     std::cout << "VCID 3 Frames         : " << vcidFrames << std::endl;
     std::cout << "250m Channels frames  : " << m250Frames << std::endl;
     std::cout << "1000m Channels frames : " << m1000Frames << std::endl;
+    std::cout << "Complete scans        : " << mersiCorrelator.complete << std::endl;
+    std::cout << "Incomplete scans       : " << mersiCorrelator.incomplete << std::endl;
 
     std::cout << std::endl;
 
@@ -153,6 +163,9 @@ int main(int argc, char *argv[])
     cimg_library::CImg<unsigned short> image13 = reader13.getImage();
     cimg_library::CImg<unsigned short> image14 = reader14.getImage();
     cimg_library::CImg<unsigned short> image15 = reader15.getImage();
+
+    // Do it for our correlated ones
+    mersiCorrelator.makeImages();
 
     // They all need to be flipped horizontally
     image1.mirror('y');
@@ -219,41 +232,41 @@ int main(int argc, char *argv[])
 
     // Output a few nice composites as well
     std::cout << "221 Composite..." << std::endl;
-    cimg_library::CImg<unsigned short> image221(8192, std::max(image1.height(), image2.height()), 1, 3);
+    cimg_library::CImg<unsigned short> image221(8192, mersiCorrelator.image1.height(), 1, 3);
     {
-        cimg_library::CImg<unsigned short> tempImage2 = image2, tempImage1 = image1;
+        cimg_library::CImg<unsigned short> tempImage2 = mersiCorrelator.image2, tempImage1 = mersiCorrelator.image1;
         tempImage2.equalize(1000);
         tempImage1.equalize(1000);
         image221.draw_image(0, 0, 0, 0, tempImage2);
         image221.draw_image(0, 0, 0, 1, tempImage2);
-        image221.draw_image(0, 0, 0, 2, tempImage1);
+        image221.draw_image(7, 0, 0, 2, tempImage1);
     }
     image221.save_png("MERSI1-RGB-221.png");
 
     std::cout << "341 Composite..." << std::endl;
-    cimg_library::CImg<unsigned short> image341(8192, std::max(image1.height(), std::max(image3.height(), image4.height())), 1, 3);
-    image341.draw_image(0, 0, 0, 0, image3);
-    image341.draw_image(0, 0, 0, 1, image4);
-    image341.draw_image(0, 0, 0, 2, image1);
+    cimg_library::CImg<unsigned short> image341(8192, mersiCorrelator.image1.height(), 1, 3);
+    image341.draw_image(24, 0, 0, 0, mersiCorrelator.image3);
+    image341.draw_image(0, 0, 0, 1, mersiCorrelator.image4);
+    image341.draw_image(24, 0, 0, 2, mersiCorrelator.image1);
     image341.save_png("MERSI1-RGB-341.png");
 
     std::cout << "441 Composite..." << std::endl;
-    cimg_library::CImg<unsigned short> image441(8192, std::max(image3.height(), image4.height()), 1, 3);
-    image441.draw_image(0, 0, 0, 0, image4);
-    image441.draw_image(0, 0, 0, 1, image4);
-    image441.draw_image(0, 0, 0, 2, image1);
+    cimg_library::CImg<unsigned short> image441(8192, mersiCorrelator.image1.height(), 1, 3);
+    image441.draw_image(0, 0, 0, 0, mersiCorrelator.image4);
+    image441.draw_image(0, 0, 0, 1, mersiCorrelator.image4);
+    image441.draw_image(21, 0, 0, 2, mersiCorrelator.image1);
     image441.save_png("MERSI1-RGB-441.png");
 
     std::cout << "321 Composite..." << std::endl;
-    cimg_library::CImg<unsigned short> image321(8192, std::max(image3.height(), std::max(image2.height(), image3.height())), 1, 3);
+    cimg_library::CImg<unsigned short> image321(8192, mersiCorrelator.image1.height(), 1, 3);
     {
-        cimg_library::CImg<unsigned short> tempImage3 = image3, tempImage2 = image2, tempImage1 = image1;
+        cimg_library::CImg<unsigned short> tempImage3 = mersiCorrelator.image3, tempImage2 = mersiCorrelator.image2, tempImage1 = mersiCorrelator.image1;
         tempImage3.equalize(1000);
         tempImage2.equalize(1000);
         tempImage1.equalize(1000);
-        image321.draw_image(0, 0, 0, 0, tempImage3);
+        image321.draw_image(8, 0, 0, 0, tempImage3);
         image321.draw_image(0, 0, 0, 1, tempImage2);
-        image321.draw_image(0, 0, 0, 2, tempImage1);
+        image321.draw_image(8, 0, 0, 2, tempImage1);
     }
     image321.save_png("MERSI1-RGB-321.png");
 
@@ -271,9 +284,9 @@ int main(int argc, char *argv[])
     image321t.save_png("MERSI1-RGB-654.png");*/
 
     std::cout << "3(24)1 Composite..." << std::endl;
-    cimg_library::CImg<unsigned short> image3241(8192, std::max(image3.height(), std::max(image2.height(), image3.height())), 1, 3);
+    cimg_library::CImg<unsigned short> image3241(8192, mersiCorrelator.image1.height(), 1, 3);
     {
-        cimg_library::CImg<unsigned short> tempImage4 = image4, tempImage3 = image3, tempImage2 = image2, tempImage1 = image1;
+        cimg_library::CImg<unsigned short> tempImage4 = mersiCorrelator.image4, tempImage3 = mersiCorrelator.image3, tempImage2 = mersiCorrelator.image2, tempImage1 = mersiCorrelator.image1;
         tempImage4.equalize(1000);
         tempImage3.equalize(1000);
         tempImage2.equalize(1000);
@@ -287,12 +300,58 @@ int main(int argc, char *argv[])
     image3241.save_png("MERSI1-RGB-3(24)1.png");
 
     std::cout << "13.15.14 Composite..." << std::endl;
-    cimg_library::CImg<unsigned short> image131514(2048, std::max(image13.height(), std::max(image14.height(), image15.height())), 1, 3);
-    image131514.draw_image(0, 0, 0, 0, image15);
-    image131514.draw_image(0, 0, 0, 1, image14);
-    image131514.draw_image(0, 0, 0, 2, image13);
+    cimg_library::CImg<unsigned short> image131514(2048, mersiCorrelator.image15.height(), 1, 3);
+    image131514.draw_image(14, 0, 0, 0, mersiCorrelator.image15);
+    image131514.draw_image(0, 0, 0, 1, mersiCorrelator.image14);
+    image131514.draw_image(14, 0, 0, 2, mersiCorrelator.image13);
     image131514.equalize(1000);
     image131514.save_png("MERSI1-RGB-13.15.14.png");
+
+    // Write synced channels
+    std::cout << "Channel 1 (synced for composites)..." << std::endl;
+    mersiCorrelator.image1.save_png("MERSI1-SYNCED-1.png");
+
+    std::cout << "Channel 2 (synced for composites)..." << std::endl;
+    mersiCorrelator.image2.save_png("MERSI1-SYNCED-2.png");
+
+    std::cout << "Channel 3 (synced for composites)..." << std::endl;
+    mersiCorrelator.image3.save_png("MERSI1-SYNCED-3.png");
+
+    std::cout << "Channel 4 (synced for composites)..." << std::endl;
+    mersiCorrelator.image4.save_png("MERSI1-SYNCED-4.png");
+
+    std::cout << "Channel 5 (synced for composites)..." << std::endl;
+    mersiCorrelator.image5.save_png("MERSI1-SYNCED-5.png");
+
+    std::cout << "Channel 6 (synced for composites)..." << std::endl;
+    mersiCorrelator.image6.save_png("MERSI1-SYNCED-6.png");
+
+    std::cout << "Channel 7 (synced for composites)..." << std::endl;
+    mersiCorrelator.image7.save_png("MERSI1-SYNCED-7.png");
+
+    std::cout << "Channel 8 (synced for composites)..." << std::endl;
+    mersiCorrelator.image8.save_png("MERSI1-SYNCED-8.png");
+
+    std::cout << "Channel 9 (synced for composites)..." << std::endl;
+    mersiCorrelator.image9.save_png("MERSI1-SYNCED-9.png");
+
+    std::cout << "Channel 10 (synced for composites)..." << std::endl;
+    mersiCorrelator.image10.save_png("MERSI1-SYNCED-10.png");
+
+    std::cout << "Channel 11 (synced for composites)..." << std::endl;
+    mersiCorrelator.image11.save_png("MERSI1-SYNCED-11.png");
+
+    std::cout << "Channel 12 (synced for composites)..." << std::endl;
+    mersiCorrelator.image12.save_png("MERSI1-SYNCED-12.png");
+
+    std::cout << "Channel 13 (synced for composites)..." << std::endl;
+    mersiCorrelator.image13.save_png("MERSI1-SYNCED-13.png");
+
+    std::cout << "Channel 14 (synced for composites)..." << std::endl;
+    mersiCorrelator.image14.save_png("MERSI1-SYNCED-14.png");
+
+    std::cout << "Channel 15 (synced for composites)..." << std::endl;
+    mersiCorrelator.image15.save_png("MERSI1-SYNCED-15.png");
 
     data_in.close();
 }
