@@ -1,9 +1,9 @@
 #include "deframer.h"
 
 // Definitely still needs tuning
-#define THRESOLD_STATE_3 12
-#define THRESOLD_STATE_2 6
-#define THRESOLD_STATE_1 2
+#define THRESOLD_STATE_3 22
+#define THRESOLD_STATE_2 2
+#define THRESOLD_STATE_1 6
 #define THRESOLD_STATE_0 0
 
 // Returns the asked bit!
@@ -191,8 +191,7 @@ std::vector<std::array<uint8_t, CADU_SIZE>> CADUDeframer::work(uint8_t *input, s
                         sep_errors = 0;
                         good = 0;
                     }
-
-                    if (sep_errors == 2)
+                    else if (sep_errors == 2)
                     {
                         state = THRESOLD_STATE_2;
                         state_2_bits_count = 0;
@@ -222,7 +221,7 @@ std::vector<std::array<uint8_t, CADU_SIZE>> CADUDeframer::work(uint8_t *input, s
                     errors++;
                     //skip = CADU_SIZE * 8;
 
-                    if (state_2_bits_count >= 3072 * 8)
+                    if (state_2_bits_count >= 5 * 1024 * 8)
                     {
                         state = THRESOLD_STATE_0;
                         //bitsToIncrement = 1;
