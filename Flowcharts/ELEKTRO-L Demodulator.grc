@@ -21,7 +21,7 @@ options:
     run_options: prompt
     sizing_mode: fixed
     thread_safe_setters: ''
-    title: EEKTRO-L Demodulator
+    title: ELEKTRO-L Demodulator
     window_size: ''
   states:
     bus_sink: false
