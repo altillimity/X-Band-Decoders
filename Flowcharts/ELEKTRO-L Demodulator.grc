@@ -537,7 +537,7 @@ blocks:
     bus_structure: null
     coordinate: [645, 7]
     rotation: 0
-    state: true
+    state: disabled
 - name: root_raised_cosine_filter_0
   id: root_raised_cosine_filter
   parameters:
