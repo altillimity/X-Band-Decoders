@@ -178,6 +178,22 @@ int main(int argc, char *argv[])
     }
     image121.save_png("MODIS-RGB-121.png");
 
+    std::cout << "143 Composite..." << std::endl;
+    cimg_library::CImg<unsigned short> image143(1354 * 4, reader.lines * 4, 1, 3);
+    {
+        cimg_library::CImg<unsigned short> tempImage4 = reader.getImage500m(1), tempImage3 = reader.getImage500m(0), tempImage1 = reader.getImage250m(0);
+        tempImage4.equalize(1000);
+        tempImage3.equalize(1000);
+        tempImage1.equalize(1000);
+        image143.draw_image(0, 0, 0, 0, tempImage1);
+        tempImage3.resize(tempImage3.width() * 2, tempImage3.height() * 2);
+        tempImage4.resize(tempImage4.width() * 2, tempImage4.height() * 2);
+        image143.draw_image(0, 0, 0, 1, tempImage4);
+        image143.draw_image(0, 0, 0, 2, tempImage3);
+        image143.equalize(1000);
+    }
+    image143.save_png("MODIS-RGB-143.png");
+
     data_in.close();
     data_out.close();
 }
