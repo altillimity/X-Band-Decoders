@@ -22,10 +22,19 @@ std::ofstream data_out;
 
 int main(int argc, char *argv[])
 {
-    if (argc != 2)
+    if (argc != 2 && argc != 3)
     {
-        std::cout << "Usage : " << argv[0] << " inputFrames.bin" << std::endl;
+        std::cout << "Usage (default Aqua, -t for Terra): " << argv[0] << " inputFrames.bin [-t]" << std::endl;
         return 0;
+    }
+
+    bool terra = false;
+
+    // Terra mode?
+    if (argc == 3)
+    {
+        if (std::string(argv[2]) == "-t")
+            terra = true;
     }
 
     // Complete filesize
@@ -62,8 +71,8 @@ int main(int argc, char *argv[])
         // Parse this transport frame
         libccsds::VCDU vcdu = libccsds::parseVCDU(cadu);
 
-        // Right channel? (VCID 30 is MODIS)
-        if (vcdu.vcid == 30)
+        // Right channel? (VCID 30/42 is MODIS)
+        if (vcdu.vcid == (terra ? 42 : 30))
         {
             modis_cadu++;
 
