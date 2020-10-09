@@ -9,9 +9,6 @@ target_include_directories(MODIS-Decoder PUBLIC src)
 
 target_link_libraries(MODIS-Decoder PUBLIC m)
 
-find_library(AEC_LIBRARY aec HINTS /usr/lib REQUIRED)
-target_link_libraries(MODIS-Decoder PUBLIC ${AEC_LIBRARY})
-
 find_library(CCSDS_LIBRARY ccsds REQUIRED)
 target_link_libraries(MODIS-Decoder PUBLIC ${CCSDS_LIBRARY})
 
