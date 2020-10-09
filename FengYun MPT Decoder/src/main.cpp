@@ -95,6 +95,7 @@ int main(int argc, char *argv[])
 
     // Read buffer
     std::complex<float> buffer[BUFFER_SIZE];
+    int8_t *soft_buffer = new int8_t[BUFFER_SIZE * 2];
 
     // Diff decoder input and output
     std::vector<uint8_t> *diff_in = new std::vector<uint8_t>, *diff_out = new std::vector<uint8_t>;
@@ -125,9 +126,15 @@ int main(int argc, char *argv[])
     // Read until there is no more data
     while (!data_in.eof())
     {
-
         // Read a buffer
-        data_in.read((char *)buffer, sizeof(std::complex<float>) * BUFFER_SIZE);
+        data_in.read((char *)soft_buffer, BUFFER_SIZE * 2);
+
+        // Convert to hard symbols from soft symbols. We may want to work with soft only later?
+        for (int i = 0; i < BUFFER_SIZE; i++)
+        {
+            using namespace std::complex_literals;
+            buffer[i] = ((float)soft_buffer[i * 2 + 1] / 75.0f) + ((float)soft_buffer[i * 2] / 75.0f) * 1if;
+        }
 
         // Deinterleave I & Q for the 2 Viterbis
         for (int i = 0; i < BUFFER_SIZE / 2; i++)

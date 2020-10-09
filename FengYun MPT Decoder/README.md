@@ -1,6 +1,6 @@
 # FengYun MPT Decoder
 
-Program that can decode FengYun MPT (A/B/C) downlinks from hard symbols to frames.
+Program that can decode FengYun MPT (A/B/C) downlinks from soft symbols to frames.
 
 Usage : `./FengYun-MPT-Decoder symbols.bin outputframes.bin`
 
