@@ -122,7 +122,7 @@ blocks:
     bus_structure: null
     coordinate: [329, 441]
     rotation: 180
-    state: enabled
+    state: disabled
 - name: blocks_complex_to_float_0_0
   id: blocks_complex_to_float
   parameters:
@@ -192,7 +192,7 @@ blocks:
     bus_structure: null
     coordinate: [354, 316]
     rotation: 180
-    state: enabled
+    state: disabled
 - name: blocks_delay_0
   id: blocks_delay
   parameters:
@@ -237,7 +237,7 @@ blocks:
     alias: ''
     begin_tag: pmt.PMT_NIL
     comment: ''
-    file: /run/media/alan/86a00fd2-c58e-4a0e-9c80-ad067b3b7997/X-Band/Terra_8212MHz_153M6.raw
+    file: ''
     length: '0'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -251,7 +251,7 @@ blocks:
     bus_structure: null
     coordinate: [14, 117]
     rotation: 270
-    state: disabled
+    state: enabled
 - name: blocks_file_source_0_0_0
   id: blocks_file_source
   parameters:
@@ -273,7 +273,7 @@ blocks:
     bus_structure: null
     coordinate: [38, 425]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_float_to_char_0
   id: blocks_float_to_char
   parameters:
@@ -306,7 +306,7 @@ blocks:
     bus_structure: null
     coordinate: [295, 195]
     rotation: 90
-    state: enabled
+    state: disabled
 - name: blocks_float_to_complex_1
   id: blocks_float_to_complex
   parameters:
@@ -371,7 +371,7 @@ blocks:
     bus_structure: null
     coordinate: [81, 358]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_multiply_const_vxx_0
   id: blocks_multiply_const_vxx
   parameters:
@@ -407,7 +407,7 @@ blocks:
     bus_structure: null
     coordinate: [323, 391]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_throttle_0_0
   id: blocks_throttle
   parameters:
@@ -441,7 +441,7 @@ blocks:
     bus_structure: null
     coordinate: [324, 500]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: digital_clock_recovery_mm_xx_0_0
   id: digital_clock_recovery_mm_xx
   parameters:
