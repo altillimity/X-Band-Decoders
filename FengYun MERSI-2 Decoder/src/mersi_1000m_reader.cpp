@@ -2,7 +2,7 @@
 
 MERSI1000Reader::MERSI1000Reader()
 {
-    imageBuffer = new unsigned short[10000 * 2048];
+    imageBuffer = new unsigned short[20000 * 2048];
     frames = 0;
 }
 

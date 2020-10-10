@@ -2,7 +2,7 @@
 
 MERSI250Reader::MERSI250Reader()
 {
-    imageBuffer = new unsigned short[10000 * 8192];
+    imageBuffer = new unsigned short[20000 * 8192];
     frames = 0;
 }
 
