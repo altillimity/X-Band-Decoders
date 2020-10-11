@@ -12,6 +12,9 @@ target_link_libraries(MODIS-Decoder PUBLIC m)
 find_library(CCSDS_LIBRARY ccsds REQUIRED)
 target_link_libraries(MODIS-Decoder PUBLIC ${CCSDS_LIBRARY})
 
+find_package(Threads REQUIRED)
+target_link_libraries(FengYun-MERSI-2-Decoder PUBLIC Threads::Threads)
+
 if(WIN32 AND NOT MINGW)
     find_package(PNG CONFIG REQUIRED)
 else()
