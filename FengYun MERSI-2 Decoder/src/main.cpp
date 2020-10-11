@@ -390,79 +390,79 @@ int main(int argc, char *argv[])
 
     // Write synced channels
     std::cout << "Channel 1 (synced for composites)..." << std::endl;
-    mersiCorrelator->image1.save_png("MERSI1-SYNCED-1.png");
+    mersiCorrelator->image1.save_png("MERSI2-SYNCED-1.png");
 
     std::cout << "Channel 2 (synced for composites)..." << std::endl;
-    mersiCorrelator->image2.save_png("MERSI1-SYNCED-2.png");
+    mersiCorrelator->image2.save_png("MERSI2-SYNCED-2.png");
 
     std::cout << "Channel 3 (synced for composites)..." << std::endl;
-    mersiCorrelator->image3.save_png("MERSI1-SYNCED-3.png");
+    mersiCorrelator->image3.save_png("MERSI2-SYNCED-3.png");
 
     std::cout << "Channel 4 (synced for composites)..." << std::endl;
-    mersiCorrelator->image4.save_png("MERSI1-SYNCED-4.png");
+    mersiCorrelator->image4.save_png("MERSI2-SYNCED-4.png");
 
     std::cout << "Channel 5 (synced for composites)..." << std::endl;
-    mersiCorrelator->image5.save_png("MERSI1-SYNCED-5.png");
+    mersiCorrelator->image5.save_png("MERSI2-SYNCED-5.png");
 
     std::cout << "Channel 6 (synced for composites)..." << std::endl;
-    mersiCorrelator->image6.save_png("MERSI1-SYNCED-6.png");
+    mersiCorrelator->image6.save_png("MERSI2-SYNCED-6.png");
 
     std::cout << "Channel 7 (synced for composites)..." << std::endl;
-    mersiCorrelator->image7.save_png("MERSI1-SYNCED-7.png");
+    mersiCorrelator->image7.save_png("MERSI2-SYNCED-7.png");
 
     std::cout << "Channel 8 (synced for composites)..." << std::endl;
-    mersiCorrelator->image8.save_png("MERSI1-SYNCED-8.png");
+    mersiCorrelator->image8.save_png("MERSI2-SYNCED-8.png");
 
     std::cout << "Channel 9 (synced for composites)..." << std::endl;
-    mersiCorrelator->image9.save_png("MERSI1-SYNCED-9.png");
+    mersiCorrelator->image9.save_png("MERSI2-SYNCED-9.png");
 
     std::cout << "Channel 10 (synced for composites)..." << std::endl;
-    mersiCorrelator->image10.save_png("MERSI1-SYNCED-10.png");
+    mersiCorrelator->image10.save_png("MERSI2-SYNCED-10.png");
 
     std::cout << "Channel 11 (synced for composites)..." << std::endl;
-    mersiCorrelator->image11.save_png("MERSI1-SYNCED-11.png");
+    mersiCorrelator->image11.save_png("MERSI2-SYNCED-11.png");
 
     std::cout << "Channel 12 (synced for composites)..." << std::endl;
-    mersiCorrelator->image12.save_png("MERSI1-SYNCED-12.png");
+    mersiCorrelator->image12.save_png("MERSI2-SYNCED-12.png");
 
     std::cout << "Channel 13 (synced for composites)..." << std::endl;
-    mersiCorrelator->image13.save_png("MERSI1-SYNCED-13.png");
+    mersiCorrelator->image13.save_png("MERSI2-SYNCED-13.png");
 
     std::cout << "Channel 14 (synced for composites)..." << std::endl;
-    mersiCorrelator->image14.save_png("MERSI1-SYNCED-14.png");
+    mersiCorrelator->image14.save_png("MERSI2-SYNCED-14.png");
 
     std::cout << "Channel 15 (synced for composites)..." << std::endl;
-    mersiCorrelator->image15.save_png("MERSI1-SYNCED-15.png");
+    mersiCorrelator->image15.save_png("MERSI2-SYNCED-15.png");
 
     std::cout << "Channel 16 (synced for composites)..." << std::endl;
-    mersiCorrelator->image16.save_png("MERSI1-SYNCED-16.png");
+    mersiCorrelator->image16.save_png("MERSI2-SYNCED-16.png");
 
     std::cout << "Channel 17 (synced for composites)..." << std::endl;
-    mersiCorrelator->image17.save_png("MERSI1-SYNCED-17.png");
+    mersiCorrelator->image17.save_png("MERSI2-SYNCED-17.png");
 
     std::cout << "Channel 18 (synced for composites)..." << std::endl;
-    mersiCorrelator->image18.save_png("MERSI1-SYNCED-18.png");
+    mersiCorrelator->image18.save_png("MERSI2-SYNCED-18.png");
 
     std::cout << "Channel 18 (synced for composites)..." << std::endl;
-    mersiCorrelator->image18.save_png("MERSI1-SYNCED-18.png");
+    mersiCorrelator->image18.save_png("MERSI2-SYNCED-18.png");
 
     std::cout << "Channel 19 (synced for composites)..." << std::endl;
-    mersiCorrelator->image19.save_png("MERSI1-SYNCED-19.png");
+    mersiCorrelator->image19.save_png("MERSI2-SYNCED-19.png");
 
     std::cout << "Channel 20 (synced for composites)..." << std::endl;
-    mersiCorrelator->image20.save_png("MERSI1-SYNCED-20.png");
+    mersiCorrelator->image20.save_png("MERSI2-SYNCED-20.png");
 
     std::cout << "Channel 21 (synced for composites)..." << std::endl;
-    mersiCorrelator->image21.save_png("MERSI1-SYNCED-21.png");
+    mersiCorrelator->image21.save_png("MERSI2-SYNCED-21.png");
 
     std::cout << "Channel 22 (synced for composites)..." << std::endl;
-    mersiCorrelator->image22.save_png("MERSI1-SYNCED-22.png");
+    mersiCorrelator->image22.save_png("MERSI2-SYNCED-22.png");
 
     std::cout << "Channel 23 (synced for composites)..." << std::endl;
-    mersiCorrelator->image23.save_png("MERSI1-SYNCED-23.png");
+    mersiCorrelator->image23.save_png("MERSI2-SYNCED-23.png");
 
     std::cout << "Channel 24 (synced for composites)..." << std::endl;
-    mersiCorrelator->image24.save_png("MERSI1-SYNCED-24.png");
+    mersiCorrelator->image24.save_png("MERSI2-SYNCED-24.png");
 
     data_in.close();
 }
