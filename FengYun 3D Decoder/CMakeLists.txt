@@ -20,3 +20,5 @@ find_package(Threads REQUIRED)
 target_link_libraries(FY3DDecoder PUBLIC Threads::Threads)
 
 target_link_libraries (FY3DDecoder PUBLIC "correct")
+
+install(TARGETS FY3DDecoder DESTINATION bin)

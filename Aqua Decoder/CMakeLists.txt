@@ -16,3 +16,5 @@ target_include_directories(AQUADecoder PUBLIC src)
 target_link_libraries(AQUADecoder PUBLIC m)
 
 target_link_libraries (AQUADecoder PUBLIC "correct")
+
+install(TARGETS AQUADecoder DESTINATION bin)
