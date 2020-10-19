@@ -196,13 +196,16 @@ int main(int argc, char *argv[])
                 for (int i = 0; i < 4; i++)
                 {
                     reedSolomon.deinterleave(&cadu[4], rsWorkBuffer, i, 4);
-                    errors = reedSolomon.decode_ccsds(rsWorkBuffer);
+                    errors += reedSolomon.decode_ccsds(rsWorkBuffer);
                     reedSolomon.interleave(rsWorkBuffer, &cadu[4], i, 4);
                 }
 
-                // Write it to our output file!
-                data_out_total += CADU_SIZE;
-                data_out.write((char *)&cadu, CADU_SIZE);
+                // Write it to our output file! But only corrected frames...
+                if (errors > -4)
+                {
+                    data_out_total += CADU_SIZE;
+                    data_out.write((char *)&cadu, CADU_SIZE);
+                }
             }
         }
 

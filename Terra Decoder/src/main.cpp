@@ -166,12 +166,6 @@ int main(int argc, char *argv[])
 
                 syncedRunsCount = 0;
             }
-            else
-            {
-                syncedRunsCount++;
-                if (syncedRunsCount == 5)
-                    locked = true;
-            }
 
             // Correct phase
             packetFixer.fixPacket(buffer, ENCODED_FRAME_SIZE, phaseShift, iqinv);
@@ -190,13 +184,19 @@ int main(int argc, char *argv[])
             for (int i = 0; i < 4; i++)
             {
                 reedSolomon.deinterleave(&postViterbiWorkBuffer[4], rsWorkBuffer, i, 4);
-                errors = reedSolomon.decode_rs8(rsWorkBuffer);
+                errors += reedSolomon.decode_ccsds(rsWorkBuffer);
                 reedSolomon.interleave(rsWorkBuffer, &postViterbiWorkBuffer[4], i, 4);
             }
 
-            // Output this
-            data_out_total += FRAME_SIZE;
-            data_out.write((char *)postViterbiWorkBuffer, FRAME_SIZE);
+            if (errors > -4)
+            {
+                syncedRunsCount++;
+                if (syncedRunsCount == 5)
+                    locked = true;
+
+                data_out_total += FRAME_SIZE;
+                data_out.write((char *)postViterbiWorkBuffer, FRAME_SIZE);
+            }
         }
         else
         {
