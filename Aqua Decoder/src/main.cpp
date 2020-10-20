@@ -22,7 +22,7 @@ size_t getFilesize(std::string filepath)
 }
 
 // Processing buffer size
-#define BUFFER_SIZE (1024 * 8)
+#define BUFFER_SIZE (1024 * 8 * 8)
 
 // Returns the asked bit!
 template <typename T>
@@ -74,8 +74,8 @@ int main(int argc, char *argv[])
     // I/Q Buffers
     uint8_t decodedBufI[BUFFER_SIZE / 2];
     uint8_t decodedBufQ[BUFFER_SIZE / 2];
-    uint8_t bufI[(BUFFER_SIZE / 8) / 2];
-    uint8_t bufQ[(BUFFER_SIZE / 8) / 2];
+    uint8_t bufI[(BUFFER_SIZE / 8) / 2 + 1];
+    uint8_t bufQ[(BUFFER_SIZE / 8) / 2 + 1];
 
     // Final buffer after decoding
     uint8_t finalBuffer[(BUFFER_SIZE / 8)];
@@ -129,8 +129,9 @@ int main(int argc, char *argv[])
         }
 
         // Group symbols into bytes now, I channel
-        inFinalByteBuffer = 0;
+        inFinalByteBuffer = 1;
         inByteShifter = 0;
+        bufI[0] = bufI[512]; // Reuse some of last run's data
         for (int i = 0; i < BUFFER_SIZE / 2; i++)
         {
             byteShifter = byteShifter << 1 | decodedBufI[i];
@@ -144,8 +145,9 @@ int main(int argc, char *argv[])
         }
 
         // Group symbols into bytes now, Q channel
-        inFinalByteBuffer = 0;
+        inFinalByteBuffer = 1;
         inByteShifter = 0;
+        bufQ[0] = bufQ[512]; // Reuse some of last run's data
         for (int i = 0; i < BUFFER_SIZE / 2; i++)
         {
             byteShifter = byteShifter << 1 | decodedBufQ[i];
@@ -159,28 +161,28 @@ int main(int argc, char *argv[])
         }
 
         // Differential decoding for both of them
-        diff.nrzmDecode(bufI, (BUFFER_SIZE / 8) / 2);
-        diff.nrzmDecode(bufQ, (BUFFER_SIZE / 8) / 2);
+        diff.nrzmDecode(bufI, (BUFFER_SIZE / 8) / 2 + 1);
+        diff.nrzmDecode(bufQ, (BUFFER_SIZE / 8) / 2 + 1);
 
         // Interleave them back
         for (int i = 0; i < (BUFFER_SIZE / 8) / 2; i++)
         {
-            finalBuffer[i * 2] = getBit<uint8_t>(bufI[i], 7) << 7 |
-                                 getBit<uint8_t>(bufQ[i], 7) << 6 |
-                                 getBit<uint8_t>(bufI[i], 6) << 5 |
-                                 getBit<uint8_t>(bufQ[i], 6) << 4 |
-                                 getBit<uint8_t>(bufI[i], 5) << 3 |
-                                 getBit<uint8_t>(bufQ[i], 5) << 2 |
-                                 getBit<uint8_t>(bufI[i], 4) << 1 |
-                                 getBit<uint8_t>(bufQ[i], 4) << 0;
-            finalBuffer[i * 2 + 1] = getBit<uint8_t>(bufI[i], 3) << 7 |
-                                     getBit<uint8_t>(bufQ[i], 3) << 6 |
-                                     getBit<uint8_t>(bufI[i], 2) << 5 |
-                                     getBit<uint8_t>(bufQ[i], 2) << 4 |
-                                     getBit<uint8_t>(bufI[i], 1) << 3 |
-                                     getBit<uint8_t>(bufQ[i], 1) << 2 |
-                                     getBit<uint8_t>(bufI[i], 0) << 1 |
-                                     getBit<uint8_t>(bufQ[i], 0) << 0;
+            finalBuffer[i * 2] = getBit<uint8_t>(bufI[i + 1], 7) << 7 |
+                                 getBit<uint8_t>(bufQ[i + 1], 7) << 6 |
+                                 getBit<uint8_t>(bufI[i + 1], 6) << 5 |
+                                 getBit<uint8_t>(bufQ[i + 1], 6) << 4 |
+                                 getBit<uint8_t>(bufI[i + 1], 5) << 3 |
+                                 getBit<uint8_t>(bufQ[i + 1], 5) << 2 |
+                                 getBit<uint8_t>(bufI[i + 1], 4) << 1 |
+                                 getBit<uint8_t>(bufQ[i + 1], 4) << 0;
+            finalBuffer[i * 2 + 1] = getBit<uint8_t>(bufI[i + 1], 3) << 7 |
+                                     getBit<uint8_t>(bufQ[i + 1], 3) << 6 |
+                                     getBit<uint8_t>(bufI[i + 1], 2) << 5 |
+                                     getBit<uint8_t>(bufQ[i + 1], 2) << 4 |
+                                     getBit<uint8_t>(bufI[i + 1], 1) << 3 |
+                                     getBit<uint8_t>(bufQ[i + 1], 1) << 2 |
+                                     getBit<uint8_t>(bufI[i + 1], 0) << 1 |
+                                     getBit<uint8_t>(bufQ[i + 1], 0) << 0;
         }
 
         // Deframe that! (Integrated derand)
@@ -211,11 +213,11 @@ int main(int argc, char *argv[])
 
         // Console stuff
         if (deframer.getState() == 0)
-            std::cout << "\r State : NOSYNC  " << std::flush;
+            std::cout << "\r State : NOSYNC" << std::flush;
         else if (deframer.getState() == 2 | deframer.getState() == 6)
-            std::cout << "\r State : SYNCING " << std::flush;
+            std::cout << "\r State : SYNCING" << std::flush;
         else if (deframer.getState() > 6)
-            std::cout << "\r State : SYNCED  " << std::flush;
+            std::cout << "\r State : SYNCED" << std::flush;
         std::cout << ", CADUs : " << (float)(data_out_total / 1024) << ", Data out : " << round(data_out_total / 1e5) / 10.0f << " MB, Progress : " << round(((float)data_in.tellg() / (float)filesize) * 1000.0f) / 10.0f << "%     " << std::flush;
     }
 

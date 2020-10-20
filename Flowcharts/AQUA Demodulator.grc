@@ -78,8 +78,8 @@ blocks:
     max_gain: '65536'
     maxoutbuf: '0'
     minoutbuf: '0'
-    rate: 1e-4
-    reference: '1.0'
+    rate: 1e-2
+    reference: '0.8'
     type: complex
   states:
     bus_sink: false
@@ -414,13 +414,13 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    gain_mu: '0.001'
-    gain_omega: 0.001**2/4.0
+    gain_mu: '0.037'
+    gain_omega: '0.8'
     maxoutbuf: '0'
     minoutbuf: '0'
-    mu: '0.5'
+    mu: '0.9'
     omega: sps
-    omega_relative_limit: '0.005'
+    omega_relative_limit: '0.00015'
     type: complex
   states:
     bus_sink: false
