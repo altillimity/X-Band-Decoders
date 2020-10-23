@@ -376,6 +376,18 @@ int main(int argc, char *argv[])
     image_dnb_lgs.normalize(0, std::numeric_limits<unsigned char>::max());
     image_dnb_mgs.normalize(0, std::numeric_limits<unsigned char>::max());
 
+    std::cout << "Making DNB night version..." << std::endl;
+    cimg_library::CImg<unsigned short> image_dnb_night = image_dnb;
+    for (int i = 0; i < image_dnb_night.height() * image_dnb_night.width(); i++)
+    {
+        // Filter out "background noise" - this is not awesome but best for now...
+        unsigned short &current = image_dnb_night.data()[i];
+        if (current < 3)
+            current = 0;
+    }
+    image_dnb_night.equalize(1000);
+    image_dnb_night.normalize(0, std::numeric_limits<unsigned char>::max());
+
     // Histogram equalization so it doesn't look like crap
     std::cout << "Equalizing imaging channels..." << std::endl;
     image_i1.equalize(1000);
@@ -473,6 +485,9 @@ int main(int argc, char *argv[])
 
     std::cout << "Channel DNB..." << std::endl;
     image_dnb.save_png("VIIRS-DNB.png");
+
+    std::cout << "Channel DNB - Night improved..." << std::endl;
+    image_dnb_night.save_png("VIIRS-DNB-NIGHT.png");
 
     std::cout << "Channel DNB-MGS..." << std::endl;
     image_dnb_mgs.save_png("VIIRS-DNB-MGS.png");

@@ -149,8 +149,8 @@ cimg_library::CImg<unsigned short> VIIRSReader::getImage()
                     // Check if this detector is valid
                     if (body.detectors[det].data_payload_size > 8 && (body.detectors[det].sync_word == body.sync_word_pattern || body.detectors[det].sync_word == 0xC000FFEE))
                     {
-                         for (int z = 0; z < channelSettings.zoneWidth[det]; z++)
-                            body.detectors[det].decompressedPayload[z] *= 2;
+                        for (int z = 0; z < channelSettings.zoneWidth[det]; z++)
+                            body.detectors[det].decompressedPayload[z] *= 1.5f;
 
                         // Cleanup garbage data on the edges, Moderate channels
                         if (channelSettings.zoneHeight == 15 && (det == 0 || det == 5) && (y == 0 || y == 1 || y == 14))
