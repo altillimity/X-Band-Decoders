@@ -203,7 +203,7 @@ int main(int argc, char *argv[])
                 }
 
                 // Write it to our output file! But only corrected frames...
-                if (errors > -4)
+                //if (errors > -4)
                 {
                     data_out_total += CADU_SIZE;
                     data_out.write((char *)&cadu, CADU_SIZE);
