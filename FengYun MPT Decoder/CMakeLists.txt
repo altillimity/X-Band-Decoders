@@ -20,3 +20,5 @@ find_package(Threads REQUIRED)
 target_link_libraries(FengYun-MPT-Decoder PUBLIC Threads::Threads)
 
 target_link_libraries(FengYun-MPT-Decoder PUBLIC "correct")
+
+install(TARGETS FengYun-MPT-Decoder DESTINATION bin)
