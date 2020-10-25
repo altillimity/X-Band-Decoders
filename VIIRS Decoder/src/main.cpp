@@ -487,7 +487,7 @@ int main(int argc, char *argv[])
     image_dnb.save_png("VIIRS-DNB.png");
 
     std::cout << "Channel DNB - Night improved..." << std::endl;
-    image_dnb_night.save_png("VIIRS-DNB-NIGHT.png");
+    //image_dnb_night.save_png("VIIRS-DNB-NIGHT.png");
 
     std::cout << "Channel DNB-MGS..." << std::endl;
     image_dnb_mgs.save_png("VIIRS-DNB-MGS.png");

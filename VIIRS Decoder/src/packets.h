@@ -145,7 +145,7 @@ struct Detector
 
         bitSlicer(data_payload, data_payload_size, fill_data);
 
-        if (size - checksum_offset > 8)
+        if (data_payload_size - checksum_offset > 8)
         {
             checksum = data[checksum_offset + 0] << 24 |
                        data[checksum_offset + 1] << 16 |
@@ -155,7 +155,6 @@ struct Detector
                         data[checksum_offset + 5] << 16 |
                         data[checksum_offset + 6] << 8 |
                         data[checksum_offset + 7];
-            offset += checksum_offset + 8;
         }
         else
         {
@@ -226,7 +225,10 @@ struct BodyPacket : public libccsds::CCSDSPacket
 
         int offset = 88;
         for (int i = 0; i < 6; i++)
+        {
             detectors[i] = Detector(&payload[offset], payload.size() - offset, offset);
+            offset += detectors[i].checksum_offset + 8;
+        }
     }
 
     uint32_t viirs_sequence_count;
