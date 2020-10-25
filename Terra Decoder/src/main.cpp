@@ -116,7 +116,11 @@ int main(int argc, char *argv[])
         {
             correlator.correlate(buffer, ENCODED_FRAME_SIZE / 64);
             if (correlator.getHighestCorrelationPosition() != 0)
+            {
                 correlator.correlate(buffer, ENCODED_FRAME_SIZE);
+                if (correlator.getHighestCorrelationPosition() > 30)
+                    locked = false;
+            }
         }
 
         // Correlation statistics
@@ -124,7 +128,7 @@ int main(int argc, char *argv[])
         uint32_t word = correlator.getCorrelationWordNumber();
         uint32_t pos = correlator.getHighestCorrelationPosition();
 
-        if (cor > 46)
+        if (cor > 10)
         {
             // Depending on which sync word correlated correctly, guess the current phase shift
             iqinv = (word / 4) > 0;
@@ -176,9 +180,6 @@ int main(int argc, char *argv[])
             // Differential decoding
             diff.nrzmDecode(postViterbiWorkBuffer, FRAME_SIZE);
 
-            // Hm, Terra is weird on there
-            derand.DeRandomize(&postViterbiWorkBuffer[10], FRAME_SIZE - 9);
-
             // Reed-Solomon
             int errors = 0;
             for (int i = 0; i < 4; i++)
@@ -188,14 +189,21 @@ int main(int argc, char *argv[])
                 reedSolomon.interleave(rsWorkBuffer, &postViterbiWorkBuffer[4], i, 4);
             }
 
-            if (errors > -4)
-            {
-                syncedRunsCount++;
-                if (syncedRunsCount == 5)
-                    locked = true;
+            // Hm, Terra is weird on there
+            derand.DeRandomize(&postViterbiWorkBuffer[10], 886);
 
+            // Write it out if it's not garbage
+            if (cor > 30)
+                locked = true;
+
+            if (locked)
+            {
                 data_out_total += FRAME_SIZE;
-                data_out.write((char *)postViterbiWorkBuffer, FRAME_SIZE);
+                data_out.put(0x1a);
+                data_out.put(0xcf);
+                data_out.put(0xfc);
+                data_out.put(0x1d);
+                data_out.write((char *)&postViterbiWorkBuffer[4], FRAME_SIZE - 4);
             }
         }
         else
