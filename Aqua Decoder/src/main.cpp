@@ -221,6 +221,9 @@ int main(int argc, char *argv[])
         std::cout << ", CADUs : " << (float)(data_out_total / 1024) << ", Data out : " << round(data_out_total / 1e5) / 10.0f << " MB, Progress : " << round(((float)data_in.tellg() / (float)filesize) * 1000.0f) / 10.0f << "%     " << std::flush;
     }
 
+    std::cout << std::endl
+              << "Done! Enjoy" << std::endl;
+
     data_in.close();
     data_out.close();
 }
