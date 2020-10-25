@@ -59,5 +59,5 @@ public:
 
     unsigned char &getState();
 
-    int work(uint8_t *in, size_t size, uint8_t *output);
+    int work(std::vector<std::complex<float>> &in, size_t size, uint8_t *output);
 };

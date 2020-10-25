@@ -151,10 +151,10 @@ float FengyunViterbi::ber_calc1(
 //    VITERBI DECODER, GENERAL WORK FUNCTION
 //
 //*****************************************************************************
-int FengyunViterbi::work(uint8_t *in_syms, size_t size, uint8_t *output)
+int FengyunViterbi::work(std::vector<std::complex<float>> &in_syms, size_t size, uint8_t *output)
 {
     unsigned char *out = &output[0];
-    int ninputs = size / 2;
+    int ninputs = size;
     unsigned char input_symbols_buffer_I_ph[ninputs]; //buffer for phase moved symbols I
     unsigned char input_symbols_buffer_Q_ph[ninputs]; //buffer for phase moved symbols Q
     unsigned int chan_len;
@@ -163,9 +163,20 @@ int FengyunViterbi::work(uint8_t *in_syms, size_t size, uint8_t *output)
     float sample;
     for (unsigned int i = 0; i < ninputs; i++)
     {
-        input_symbols_buffer_I_ph[i] = (unsigned char)(floor(in_syms[i * 2]));
+        // Translate and clip [-1.0..1.0] to [28..228]
+        sample = in_syms[i].real() * 127.0 + 128.0;
+        if (sample > 255.0)
+            sample = 255.0;
+        else if (sample < 0.0)
+            sample = 0.0;
+        input_symbols_buffer_I_ph[i] = (unsigned char)(floor(sample));
 
-        input_symbols_buffer_Q_ph[i] = (unsigned char)(floor(in_syms[i * 2 + 1]));
+        sample = in_syms[i].imag() * 127.0 + 128.0;
+        if (sample > 255.0)
+            sample = 255.0;
+        else if (sample < 0.0)
+            sample = 0.0;
+        input_symbols_buffer_Q_ph[i] = (unsigned char)(floor(sample));
     }
 
     //check data chunk, even or odd syms count

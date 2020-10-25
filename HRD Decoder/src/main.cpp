@@ -7,6 +7,7 @@
 #include "correlator.h"
 #include "packetfixer.h"
 #include "viterbi27.h"
+#include "viterbi.h"
 #include "derandomizer.h"
 #include "reedsolomon.h"
 #include "differentialencoding.h"
@@ -76,6 +77,7 @@ int main(int argc, char *argv[])
     SatHelper::DeRandomizer derand;
     SatHelper::ReedSolomon reedSolomon;
     SatHelper::DifferentialEncoding diff;
+    FengyunViterbi fenVit(false, 1.0, 1, 1, 5);
 
     // Other buffers
     uint8_t frameBuffer[1024];
@@ -106,7 +108,11 @@ int main(int argc, char *argv[])
         {
             correlator.correlate(buffer, ENCODED_FRAME_SIZE / 64);
             if (correlator.getHighestCorrelationPosition() != 0)
+            {
                 correlator.correlate(buffer, ENCODED_FRAME_SIZE);
+                if (correlator.getHighestCorrelationPosition() > 30)
+                    locked = false;
+            }
         }
 
         // Correlator statistics
@@ -116,7 +122,7 @@ int main(int argc, char *argv[])
 
         bool iqinv;
 
-        if (cor > 46)
+        if (cor > 10)
         {
             iqinv = (word / 4) > 0;
             switch (word % 4)
@@ -182,14 +188,17 @@ int main(int argc, char *argv[])
             }
 
             // Write it out if it's not garbage
-            if (errors > -4)
-            {
-                goodTimes++;
-                if (goodTimes == 5)
-                    locked = true;
+            if (cor > 30)
+                locked = true;
 
+            if (locked)
+            {
                 data_out_total += FRAME_SIZE;
-                data_out.write((char *)frameBuffer, FRAME_SIZE);
+                data_out.put(0x1a);
+                data_out.put(0xcf);
+                data_out.put(0xfc);
+                data_out.put(0x1d);
+                data_out.write((char *)&frameBuffer[4], FRAME_SIZE - 4);
             }
         }
         else
