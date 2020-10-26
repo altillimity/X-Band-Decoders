@@ -28,7 +28,7 @@ The flowcharts require GNU Radio 3.8 or above.
 # Aqua
 
 **Supported downlink :** DB, 8160Mhz    
-**Modulation :** SPQPSK
+**Modulation :** SPQPSK   
 **Symbolrate :** 15Mbps  
 **Recording bandwidth :** >= 15MSPS 
 
