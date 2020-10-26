@@ -63,6 +63,24 @@ std::vector<std::vector<uint8_t>> MersiDeframer::work(std::vector<uint8_t> &data
                     }
                 }
 
+                // New ASM, ABORT! and process the new one
+                if (shifter == ASM_SYNC)
+                {
+                    // Fill up what we're missing
+                    for (int b = 0; b < currentFrameSize - outputBits; b++)
+                        pushBit(0);
+
+                    writeFrame = false;
+                    wroteBits = 0;
+                    outputBits = 0;
+                    framesOut.push_back(frameBuffer);
+                    frameBuffer.clear();
+
+                    writeFrame = true;
+
+                    continue;
+                }
+
                 // Push current bit
                 pushBit(bit);
                 outputBits++;
