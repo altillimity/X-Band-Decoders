@@ -7,7 +7,6 @@
 #include "correlator.h"
 #include "packetfixer.h"
 #include "viterbi27.h"
-#include "viterbi.h"
 #include "derandomizer.h"
 #include "reedsolomon.h"
 #include "differentialencoding.h"
@@ -77,7 +76,6 @@ int main(int argc, char *argv[])
     SatHelper::DeRandomizer derand;
     SatHelper::ReedSolomon reedSolomon;
     SatHelper::DifferentialEncoding diff;
-    FengyunViterbi fenVit(false, 1.0, 1, 1, 5);
 
     // Other buffers
     uint8_t frameBuffer[1024];
@@ -188,7 +186,7 @@ int main(int argc, char *argv[])
             }
 
             // Write it out if it's not garbage
-            if (cor > 30)
+            if (cor > 50)
                 locked = true;
 
             if (locked)

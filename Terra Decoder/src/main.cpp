@@ -193,7 +193,7 @@ int main(int argc, char *argv[])
             derand.DeRandomize(&postViterbiWorkBuffer[10], 886);
 
             // Write it out if it's not garbage
-            if (cor > 30)
+            if (cor > 50)
                 locked = true;
 
             if (locked)
