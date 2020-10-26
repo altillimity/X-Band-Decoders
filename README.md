@@ -15,7 +15,7 @@ The flowcharts require GNU Radio 3.8 or above.
 # ELEKTRO-L 2/3
 
 **Supported downlink :** RDAS, 7500Mhz    
-**Modulation :** BPSK
+**Modulation :** BPSK  
 **Symbolrate :** 30.72Mbps  
 **Recording bandwidth :** >= 31MSPS, something like 40MSPS is preferred  
 
