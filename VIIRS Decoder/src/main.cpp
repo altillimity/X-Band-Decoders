@@ -345,37 +345,6 @@ int main(int argc, char *argv[])
     image_dnb_lgs.mirror('x');
     image_dnb_mgs.mirror('x');
 
-    // Normalize channels, otherwise bit depth is used inconsistently between channels
-    std::cout << "Normalizing imaging channels..." << std::endl;
-    image_i1.normalize(0, std::numeric_limits<unsigned char>::max());
-    image_i2.normalize(0, std::numeric_limits<unsigned char>::max());
-    image_i3.normalize(0, std::numeric_limits<unsigned char>::max());
-    image_i4.normalize(0, std::numeric_limits<unsigned char>::max());
-    image_i5.normalize(0, std::numeric_limits<unsigned char>::max());
-
-    std::cout << "Normalizing moderate channels..." << std::endl;
-    image_m1.normalize(0, std::numeric_limits<unsigned char>::max());
-    image_m2.normalize(0, std::numeric_limits<unsigned char>::max());
-    image_m3.normalize(0, std::numeric_limits<unsigned char>::max());
-    image_m4.normalize(0, std::numeric_limits<unsigned char>::max());
-    image_m5.normalize(0, std::numeric_limits<unsigned char>::max());
-    image_m6.normalize(0, std::numeric_limits<unsigned char>::max());
-    image_m7.normalize(0, std::numeric_limits<unsigned char>::max());
-    image_m8.normalize(0, std::numeric_limits<unsigned char>::max());
-    image_m9.normalize(0, std::numeric_limits<unsigned char>::max());
-    image_m10.normalize(0, std::numeric_limits<unsigned char>::max());
-    image_m11.normalize(0, std::numeric_limits<unsigned char>::max());
-    image_m12.normalize(0, std::numeric_limits<unsigned char>::max());
-    image_m13.normalize(0, std::numeric_limits<unsigned char>::max());
-    image_m14.normalize(0, std::numeric_limits<unsigned char>::max());
-    image_m15.normalize(0, std::numeric_limits<unsigned char>::max());
-    image_m16.normalize(0, std::numeric_limits<unsigned char>::max());
-
-    std::cout << "Normalizing DNB channels..." << std::endl;
-    image_dnb.normalize(0, std::numeric_limits<unsigned char>::max());
-    image_dnb_lgs.normalize(0, std::numeric_limits<unsigned char>::max());
-    image_dnb_mgs.normalize(0, std::numeric_limits<unsigned char>::max());
-
     std::cout << "Making DNB night version..." << std::endl;
     cimg_library::CImg<unsigned short> image_dnb_night = image_dnb;
     for (int i = 0; i < image_dnb_night.height() * image_dnb_night.width(); i++)
@@ -507,7 +476,6 @@ int main(int argc, char *argv[])
         image221.draw_image(0, 0, 0, 0, tempImage2);
         image221.draw_image(0, 0, 0, 1, tempImage2);
         image221.draw_image(0, 0, 0, 2, tempImage1);
-        image221.normalize(0, std::numeric_limits<unsigned char>::max());
         image221.equalize(1000);
         image221.mirror('x');
     }
@@ -525,7 +493,6 @@ int main(int argc, char *argv[])
         image321.draw_image(0, 0, 0, 0, tempImage3);
         image321.draw_image(0, 0, 0, 1, tempImage1);
         image321.draw_image(0, 0, 0, 2, tempImage2);
-        image321.normalize(0, std::numeric_limits<unsigned char>::max());
         image321.equalize(1000);
         image321.mirror('x');
     }
@@ -546,7 +513,6 @@ int main(int argc, char *argv[])
         image453.draw_image(0, 0, 0, 0, tempImage4);
         image453.draw_image(0, 0, 0, 1, tempImage5);
         image453.draw_image(0, 0, 0, 2, tempImage3);
-        image453.normalize(0, std::numeric_limits<unsigned char>::max());
         image453.mirror('x');
     }
     image453.save_png("VIIRS-RGB-M453.png");
@@ -566,7 +532,6 @@ int main(int argc, char *argv[])
         image543.draw_image(0, 0, 0, 0, tempImage5);
         image543.draw_image(0, 0, 0, 1, tempImage4);
         image543.draw_image(0, 0, 0, 2, tempImage3);
-        image543.normalize(0, std::numeric_limits<unsigned char>::max());
         image543.mirror('x');
     }
     image543.save_png("VIIRS-RGB-M543.png");

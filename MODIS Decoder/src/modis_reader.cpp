@@ -180,18 +180,24 @@ void MODISReader::processNightPacket(libccsds::CCSDSPacket &packet, MODISHeader 
 void MODISReader::work(libccsds::CCSDSPacket &packet)
 {
     // Filter out bad packets
-    //if (packet.payload.size() != packet.header.packet_length + 1)
-    //   return;
+    if (packet.payload.size() < 10)
+        return;
 
     MODISHeader modisHeader(packet);
 
     if (modisHeader.packet_type == DAY_GROUP)
     {
+        if (packet.payload.size() < 622)
+            return;
+
         day_count++;
         processDayPacket(packet, modisHeader);
     }
     else if (modisHeader.packet_type == NIGHT_GROUP)
     {
+        if (packet.payload.size() < 256)
+            return;
+
         night_count++;
         processNightPacket(packet, modisHeader);
     }
