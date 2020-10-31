@@ -303,7 +303,6 @@ int main(int argc, char *argv[])
         image221.draw_image(0, 0, 0, 0, tempImage2);
         image221.draw_image(0, 0, 0, 1, tempImage2);
         image221.draw_image(7, 0, 0, 2, tempImage1);
-        image221.normalize(0, std::numeric_limits<unsigned char>::max());
     }
     image221.save_png("MERSI2-RGB-221.png");
 
@@ -312,7 +311,6 @@ int main(int argc, char *argv[])
     image341.draw_image(24, 0, 0, 0, mersiCorrelator->image3);
     image341.draw_image(0, 0, 0, 1, mersiCorrelator->image4);
     image341.draw_image(24, 0, 0, 2, mersiCorrelator->image1);
-    image341.normalize(0, std::numeric_limits<unsigned char>::max());
     image341.save_png("MERSI2-RGB-341.png");
 
     std::cout << "441 Composite..." << std::endl;
@@ -320,7 +318,6 @@ int main(int argc, char *argv[])
     image441.draw_image(0, 0, 0, 0, mersiCorrelator->image4);
     image441.draw_image(0, 0, 0, 1, mersiCorrelator->image4);
     image441.draw_image(21, 0, 0, 2, mersiCorrelator->image1);
-    image441.normalize(0, std::numeric_limits<unsigned char>::max());
     image441.save_png("MERSI2-RGB-441.png");
 
     std::cout << "321 Composite..." << std::endl;
@@ -333,7 +330,6 @@ int main(int argc, char *argv[])
         image321.draw_image(8, 0, 0, 0, tempImage3);
         image321.draw_image(0, 0, 0, 1, tempImage2);
         image321.draw_image(8, 0, 0, 2, tempImage1);
-        image321.normalize(0, std::numeric_limits<unsigned char>::max());
     }
     image321.save_png("MERSI2-RGB-321.png");
 
@@ -363,7 +359,6 @@ int main(int argc, char *argv[])
         image3241.draw_image(17, 0, 0, 1, tempImage2, 0.93f + 0.5f);
         image3241.draw_image(0, 0, 0, 1, tempImage4, 0.57f);
         image3241.draw_image(26, 0, 0, 2, tempImage1);
-        image3241.normalize(0, std::numeric_limits<unsigned char>::max());
     }
     image3241.save_png("MERSI2-RGB-3(24)1.png");
 
@@ -391,7 +386,6 @@ int main(int argc, char *argv[])
         image91211.draw_image(11, 0, 0, 0, tempImage9);
         image91211.draw_image(0, 0, 0, 1, tempImage12);
         image91211.draw_image(0, 0, 0, 2, tempImage11);
-        image91211.normalize(0, std::numeric_limits<unsigned char>::max());
     }
     image91211.save_png("MERSI2-RGB-9.12.11.png");
 

@@ -171,7 +171,6 @@ int main(int argc, char *argv[])
         image221.draw_image(0, 0, 0, 0, tempImage2);
         image221.draw_image(0, 0, 0, 1, tempImage2);
         image221.draw_image(0, 0, 0, 2, tempImage1);
-        image221.normalize(0, std::numeric_limits<unsigned short>::max());
     }
     image221.save_png("MODIS-RGB-221.png");
 
@@ -184,7 +183,6 @@ int main(int argc, char *argv[])
         image121.draw_image(0, 0, 0, 0, tempImage1);
         image121.draw_image(0, 0, 0, 1, tempImage2);
         image121.draw_image(0, 0, 0, 2, tempImage1);
-        image121.normalize(0, std::numeric_limits<unsigned short>::max());
     }
     image121.save_png("MODIS-RGB-121.png");
 
@@ -200,7 +198,6 @@ int main(int argc, char *argv[])
         tempImage4.resize(tempImage4.width() * 2, tempImage4.height() * 2);
         image143.draw_image(0, 0, 0, 1, tempImage4);
         image143.draw_image(0, 0, 0, 2, tempImage3);
-        image143.normalize(0, std::numeric_limits<unsigned short>::max());
         image143.equalize(1000);
     }
     image143.save_png("MODIS-RGB-143.png");
