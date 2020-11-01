@@ -42,7 +42,7 @@ void ATMSReader::work(libccsds::CCSDSPacket &packet)
         {
             // Decode all channels
             for (int i = 0; i < 22; i++)
-                channels[i][(lines * 96) + scan_pos] = packet.payload[12 + i * 2] << 8 | packet.payload[13 + i * 2];
+                channels[i][(lines * 96) + scan_pos] = (packet.payload[12 + i * 2] << 8 | packet.payload[13 + i * 2]) * 2;
         }
     }
     else
