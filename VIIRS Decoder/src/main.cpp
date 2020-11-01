@@ -382,152 +382,267 @@ int main(int argc, char *argv[])
     image_dnb_mgs.equalize(1000);
 
     // Takes a while so we say how we're doing
-    std::cout << "Channel M1..." << std::endl;
-    image_m1.save_png("VIIRS-M1.png");
 
-    std::cout << "Channel M2..." << std::endl;
-    image_m2.save_png("VIIRS-M2.png");
+    if (image_m1.height() > 0)
+    {
+        std::cout << "Channel M1..." << std::endl;
+        image_m1.save_png("VIIRS-M1.png");
+    }
 
-    std::cout << "Channel M3..." << std::endl;
-    image_m3.save_png("VIIRS-M3.png");
+    if (image_m2.height() > 0)
+    {
+        std::cout << "Channel M2..." << std::endl;
+        image_m2.save_png("VIIRS-M2.png");
+    }
 
-    std::cout << "Channel M4..." << std::endl;
-    image_m4.save_png("VIIRS-M4.png");
+    if (image_m3.height() > 0)
+    {
+        std::cout << "Channel M3..." << std::endl;
+        image_m3.save_png("VIIRS-M3.png");
+    }
 
-    std::cout << "Channel M5..." << std::endl;
-    image_m5.save_png("VIIRS-M5.png");
+    if (image_m4.height() > 0)
+    {
+        std::cout << "Channel M4..." << std::endl;
+        image_m4.save_png("VIIRS-M4.png");
+    }
 
-    std::cout << "Channel M6..." << std::endl;
-    image_m6.save_png("VIIRS-M6.png");
+    if (image_m5.height() > 0)
+    {
+        std::cout << "Channel M5..." << std::endl;
+        image_m5.save_png("VIIRS-M5.png");
+    }
 
-    std::cout << "Channel M7..." << std::endl;
-    image_m7.save_png("VIIRS-M7.png");
+    if (image_m6.height() > 0)
+    {
+        std::cout << "Channel M6..." << std::endl;
+        image_m6.save_png("VIIRS-M6.png");
+    }
 
-    std::cout << "Channel M8..." << std::endl;
-    image_m8.save_png("VIIRS-M8.png");
+    if (image_m7.height() > 0)
+    {
+        std::cout << "Channel M7..." << std::endl;
+        image_m7.save_png("VIIRS-M7.png");
+    }
 
-    std::cout << "Channel M9..." << std::endl;
-    image_m9.save_png("VIIRS-M9.png");
+    if (image_m8.height() > 0)
+    {
+        std::cout << "Channel M8..." << std::endl;
+        image_m8.save_png("VIIRS-M8.png");
+    }
 
-    std::cout << "Channel M10..." << std::endl;
-    image_m10.save_png("VIIRS-M10.png");
+    if (image_m9.height() > 0)
+    {
+        std::cout << "Channel M9..." << std::endl;
+        image_m9.save_png("VIIRS-M9.png");
+    }
 
-    std::cout << "Channel M11..." << std::endl;
-    image_m11.save_png("VIIRS-M11.png");
+    if (image_m10.height() > 0)
+    {
+        std::cout << "Channel M10..." << std::endl;
+        image_m10.save_png("VIIRS-M10.png");
+    }
 
-    std::cout << "Channel M12..." << std::endl;
-    image_m12.save_png("VIIRS-M12.png");
+    if (image_m11.height() > 0)
+    {
+        std::cout << "Channel M11..." << std::endl;
+        image_m11.save_png("VIIRS-M11.png");
+    }
 
-    std::cout << "Channel M13..." << std::endl;
-    image_m13.save_png("VIIRS-M13.png");
+    if (image_m12.height() > 0)
+    {
+        std::cout << "Channel M12..." << std::endl;
+        image_m12.save_png("VIIRS-M12.png");
+    }
 
-    std::cout << "Channel M14..." << std::endl;
-    image_m14.save_png("VIIRS-M14.png");
+    if (image_m13.height() > 0)
+    {
+        std::cout << "Channel M13..." << std::endl;
+        image_m13.save_png("VIIRS-M13.png");
+    }
 
-    std::cout << "Channel M15..." << std::endl;
-    image_m15.save_png("VIIRS-M15.png");
+    if (image_m14.height() > 0)
+    {
+        std::cout << "Channel M14..." << std::endl;
+        image_m14.save_png("VIIRS-M14.png");
+    }
 
-    std::cout << "Channel M16..." << std::endl;
-    image_m16.save_png("VIIRS-M16.png");
+    if (image_m15.height() > 0)
+    {
+        std::cout << "Channel M15..." << std::endl;
+        image_m15.save_png("VIIRS-M15.png");
+    }
 
-    std::cout << "Channel I1..." << std::endl;
-    image_i1.save_png("VIIRS-I1.png");
+    if (image_m16.height() > 0)
+    {
+        std::cout << "Channel M16..." << std::endl;
+        image_m16.save_png("VIIRS-M16.png");
+    }
 
-    std::cout << "Channel I2..." << std::endl;
-    image_i2.save_png("VIIRS-I2.png");
+    if (image_i1.height() > 0)
+    {
+        std::cout << "Channel I1..." << std::endl;
+        image_i1.save_png("VIIRS-I1.png");
+    }
 
-    std::cout << "Channel I3..." << std::endl;
-    image_i3.save_png("VIIRS-I3.png");
+    if (image_i2.height() > 0)
+    {
+        std::cout << "Channel I2..." << std::endl;
+        image_i2.save_png("VIIRS-I2.png");
+    }
 
-    std::cout << "Channel I4..." << std::endl;
-    image_i4.save_png("VIIRS-I4.png");
+    if (image_i3.height() > 0)
+    {
+        std::cout << "Channel I3..." << std::endl;
+        image_i3.save_png("VIIRS-I3.png");
+    }
 
-    std::cout << "Channel I5..." << std::endl;
-    image_i5.save_png("VIIRS-I5.png");
+    if (image_i4.height() > 0)
+    {
+        std::cout << "Channel I4..." << std::endl;
+        image_i4.save_png("VIIRS-I4.png");
+    }
 
-    std::cout << "Channel DNB..." << std::endl;
-    image_dnb.save_png("VIIRS-DNB.png");
+    if (image_i5.height() > 0)
+    {
+        std::cout << "Channel I5..." << std::endl;
+        image_i5.save_png("VIIRS-I5.png");
+    }
 
-    std::cout << "Channel DNB - Night improved..." << std::endl;
-    image_dnb_night.save_png("VIIRS-DNB-NIGHT.png");
+    if (image_dnb.height() > 0)
+    {
+        std::cout << "Channel DNB..." << std::endl;
+        image_dnb.save_png("VIIRS-DNB.png");
+    }
 
-    std::cout << "Channel DNB-MGS..." << std::endl;
-    image_dnb_mgs.save_png("VIIRS-DNB-MGS.png");
+    if (image_dnb_night.height() > 0)
+    {
+        std::cout << "Channel DNB - Night improved..." << std::endl;
+        image_dnb_night.save_png("VIIRS-DNB-NIGHT.png");
+    }
 
-    std::cout << "Channel DNB-LGS..." << std::endl;
-    image_dnb_lgs.save_png("VIIRS-DNB-LGS.png");
+    if (image_dnb_mgs.height() > 0)
+    {
+        std::cout << "Channel DNB-MGS..." << std::endl;
+        image_dnb_mgs.save_png("VIIRS-DNB-MGS.png");
+    }
+
+    if (image_dnb_lgs.height() > 0)
+    {
+        std::cout << "Channel DNB-LGS..." << std::endl;
+        image_dnb_lgs.save_png("VIIRS-DNB-LGS.png");
+    }
 
     // Output a few nice composites as well
-    std::cout << "I221 Composite..." << std::endl;
-    cimg_library::CImg<unsigned short> image221;
+    if (image_i1.height() > 0 && image_i2.height() > 0)
     {
-        std::pair<VIIRSReader, VIIRSReader> correlatedChannels = correlateChannels(reader_i1, reader_i2);
-        cimg_library::CImg<unsigned short> tempImage2 = correlatedChannels.second.getImage(), tempImage1 = correlatedChannels.first.getImage();
-        image221 = cimg_library::CImg<unsigned short>(6400, tempImage1.height(), 1, 3);
-        defragChannel(tempImage2, std::get<0>(correlatedChannels).channelSettings);
-        defragChannel(tempImage1, std::get<1>(correlatedChannels).channelSettings);
-        image221.draw_image(0, 0, 0, 0, tempImage2);
-        image221.draw_image(0, 0, 0, 1, tempImage2);
-        image221.draw_image(0, 0, 0, 2, tempImage1);
-        image221.equalize(1000);
-        image221.mirror('x');
+        std::cout << "I221 Composite..." << std::endl;
+        cimg_library::CImg<unsigned short> image221;
+        {
+            std::pair<VIIRSReader, VIIRSReader> correlatedChannels = correlateChannels(reader_i1, reader_i2);
+            cimg_library::CImg<unsigned short> tempImage2 = correlatedChannels.second.getImage(), tempImage1 = correlatedChannels.first.getImage();
+            image221 = cimg_library::CImg<unsigned short>(6400, tempImage1.height(), 1, 3);
+            defragChannel(tempImage2, std::get<0>(correlatedChannels).channelSettings);
+            defragChannel(tempImage1, std::get<1>(correlatedChannels).channelSettings);
+            image221.draw_image(0, 0, 0, 0, tempImage2);
+            image221.draw_image(0, 0, 0, 1, tempImage2);
+            image221.draw_image(0, 0, 0, 2, tempImage1);
+            image221.equalize(1000);
+            image221.mirror('x');
+        }
+        image221.save_png("VIIRS-RGB-I221.png");
     }
-    image221.save_png("VIIRS-RGB-I221.png");
 
-    std::cout << "I312 Composite..." << std::endl;
-    cimg_library::CImg<unsigned short> image321;
+    if (image_i1.height() > 0 && image_i2.height() > 0 && image_i3.height() > 0)
     {
-        std::tuple<VIIRSReader, VIIRSReader, VIIRSReader> correlatedChannels = correlateThreeChannels(reader_i1, reader_i2, reader_i3);
-        cimg_library::CImg<unsigned short> tempImage2 = std::get<0>(correlatedChannels).getImage(), tempImage1 = std::get<1>(correlatedChannels).getImage(), tempImage3 = std::get<2>(correlatedChannels).getImage();
-        image321 = cimg_library::CImg<unsigned short>(6400, tempImage1.height(), 1, 3);
-        defragChannel(tempImage2, std::get<0>(correlatedChannels).channelSettings);
-        defragChannel(tempImage1, std::get<1>(correlatedChannels).channelSettings);
-        defragChannel(tempImage3, std::get<2>(correlatedChannels).channelSettings);
-        image321.draw_image(0, 0, 0, 0, tempImage3);
-        image321.draw_image(0, 0, 0, 1, tempImage1);
-        image321.draw_image(0, 0, 0, 2, tempImage2);
-        image321.equalize(1000);
-        image321.mirror('x');
+        std::cout << "I312 Composite..." << std::endl;
+        cimg_library::CImg<unsigned short> image321;
+        {
+            std::tuple<VIIRSReader, VIIRSReader, VIIRSReader> correlatedChannels = correlateThreeChannels(reader_i1, reader_i2, reader_i3);
+            cimg_library::CImg<unsigned short> tempImage2 = std::get<0>(correlatedChannels).getImage(), tempImage1 = std::get<1>(correlatedChannels).getImage(), tempImage3 = std::get<2>(correlatedChannels).getImage();
+            image321 = cimg_library::CImg<unsigned short>(6400, tempImage1.height(), 1, 3);
+            defragChannel(tempImage2, std::get<0>(correlatedChannels).channelSettings);
+            defragChannel(tempImage1, std::get<1>(correlatedChannels).channelSettings);
+            defragChannel(tempImage3, std::get<2>(correlatedChannels).channelSettings);
+            image321.draw_image(0, 0, 0, 0, tempImage3);
+            image321.draw_image(0, 0, 0, 1, tempImage1);
+            image321.draw_image(0, 0, 0, 2, tempImage2);
+            image321.equalize(1000);
+            image321.mirror('x');
+        }
+        image321.save_png("VIIRS-RGB-I312.png");
     }
-    image321.save_png("VIIRS-RGB-I312.png");
 
-    std::cout << "M453 Composite..." << std::endl;
-    cimg_library::CImg<unsigned short> image453;
+    if (image_m4.height() > 0 && image_m5.height() > 0 && image_m3.height() > 0)
     {
-        std::tuple<VIIRSReader, VIIRSReader, VIIRSReader> correlatedChannels = correlateThreeChannels(reader_m4, reader_m5, reader_m3);
-        cimg_library::CImg<unsigned short> tempImage4 = std::get<0>(correlatedChannels).getImage(), tempImage5 = std::get<1>(correlatedChannels).getImage(), tempImage3 = std::get<2>(correlatedChannels).getImage();
-        image453 = cimg_library::CImg<unsigned short>(3200, tempImage5.height(), 1, 3);
-        defragChannel(tempImage5, std::get<1>(correlatedChannels).channelSettings);
-        defragChannel(tempImage4, std::get<0>(correlatedChannels).channelSettings);
-        defragChannel(tempImage3, std::get<2>(correlatedChannels).channelSettings);
-        tempImage5.equalize(1000);
-        tempImage4.equalize(1000);
-        tempImage3.equalize(1000);
-        image453.draw_image(0, 0, 0, 0, tempImage4);
-        image453.draw_image(0, 0, 0, 1, tempImage5);
-        image453.draw_image(0, 0, 0, 2, tempImage3);
-        image453.mirror('x');
+        std::cout << "M453 Composite..." << std::endl;
+        cimg_library::CImg<unsigned short> image453;
+        {
+            std::tuple<VIIRSReader, VIIRSReader, VIIRSReader> correlatedChannels = correlateThreeChannels(reader_m4, reader_m5, reader_m3);
+            cimg_library::CImg<unsigned short> tempImage4 = std::get<0>(correlatedChannels).getImage(), tempImage5 = std::get<1>(correlatedChannels).getImage(), tempImage3 = std::get<2>(correlatedChannels).getImage();
+            image453 = cimg_library::CImg<unsigned short>(3200, tempImage5.height(), 1, 3);
+            defragChannel(tempImage5, std::get<1>(correlatedChannels).channelSettings);
+            defragChannel(tempImage4, std::get<0>(correlatedChannels).channelSettings);
+            defragChannel(tempImage3, std::get<2>(correlatedChannels).channelSettings);
+            tempImage5.equalize(1000);
+            tempImage4.equalize(1000);
+            tempImage3.equalize(1000);
+            image453.draw_image(0, 0, 0, 0, tempImage4);
+            image453.draw_image(0, 0, 0, 1, tempImage5);
+            image453.draw_image(0, 0, 0, 2, tempImage3);
+            image453.mirror('x');
+        }
+        image453.save_png("VIIRS-RGB-M453.png");
     }
-    image453.save_png("VIIRS-RGB-M453.png");
 
-    std::cout << "M543 Composite..." << std::endl;
-    cimg_library::CImg<unsigned short> image543;
+    if (image_m4.height() > 0 && image_m5.height() > 0 && image_m3.height() > 0)
     {
-        std::tuple<VIIRSReader, VIIRSReader, VIIRSReader> correlatedChannels = correlateThreeChannels(reader_m4, reader_m5, reader_m3);
-        cimg_library::CImg<unsigned short> tempImage4 = std::get<0>(correlatedChannels).getImage(), tempImage5 = std::get<1>(correlatedChannels).getImage(), tempImage3 = std::get<2>(correlatedChannels).getImage();
-        image543 = cimg_library::CImg<unsigned short>(3200, tempImage5.height(), 1, 3);
-        defragChannel(tempImage5, std::get<1>(correlatedChannels).channelSettings);
-        defragChannel(tempImage4, std::get<0>(correlatedChannels).channelSettings);
-        defragChannel(tempImage3, std::get<2>(correlatedChannels).channelSettings);
-        tempImage5.equalize(1000);
-        tempImage4.equalize(1000);
-        tempImage3.equalize(1000);
-        image543.draw_image(0, 0, 0, 0, tempImage5);
-        image543.draw_image(0, 0, 0, 1, tempImage4);
-        image543.draw_image(0, 0, 0, 2, tempImage3);
-        image543.mirror('x');
+        std::cout << "M543 Composite..." << std::endl;
+        cimg_library::CImg<unsigned short> image543;
+        {
+            std::tuple<VIIRSReader, VIIRSReader, VIIRSReader> correlatedChannels = correlateThreeChannels(reader_m4, reader_m5, reader_m3);
+            cimg_library::CImg<unsigned short> tempImage4 = std::get<0>(correlatedChannels).getImage(), tempImage5 = std::get<1>(correlatedChannels).getImage(), tempImage3 = std::get<2>(correlatedChannels).getImage();
+            image543 = cimg_library::CImg<unsigned short>(3200, tempImage5.height(), 1, 3);
+            defragChannel(tempImage5, std::get<1>(correlatedChannels).channelSettings);
+            defragChannel(tempImage4, std::get<0>(correlatedChannels).channelSettings);
+            defragChannel(tempImage3, std::get<2>(correlatedChannels).channelSettings);
+            tempImage5.equalize(1000);
+            tempImage4.equalize(1000);
+            tempImage3.equalize(1000);
+            image543.draw_image(0, 0, 0, 0, tempImage5);
+            image543.draw_image(0, 0, 0, 1, tempImage4);
+            image543.draw_image(0, 0, 0, 2, tempImage3);
+            image543.mirror('x');
+        }
+        image543.save_png("VIIRS-RGB-M543.png");
     }
-    image543.save_png("VIIRS-RGB-M543.png");
+
+    if (image_dnb.height() > 0 && image_m16.height() > 0)
+    {
+        std::cout << "M16-DNB Composite..." << std::endl;
+        cimg_library::CImg<unsigned short> imagem16dnb;
+        {
+            std::pair<VIIRSReader, VIIRSReader> correlatedChannels = correlateChannels(reader_m16, reader_dnb);
+            cimg_library::CImg<unsigned short> tempImage5 = std::get<0>(correlatedChannels).getImage(), tempImageDNB = std::get<1>(correlatedChannels).getImage();
+
+            defragChannel(tempImage5, std::get<0>(correlatedChannels).channelSettings);
+            defragChannel(tempImageDNB, std::get<1>(correlatedChannels).channelSettings);
+
+            tempImageDNB.resize(tempImage5.width(), tempImage5.height());
+
+            for (int i = 0; i < tempImageDNB.height() * tempImageDNB.width(); i++)
+                tempImageDNB.data()[i] *= 15;
+
+            imagem16dnb = cimg_library::CImg<unsigned short>(3200 - 50, tempImage5.height(), 1, 1);
+            tempImage5.equalize(1000);
+            
+            imagem16dnb.draw_image(0, 0, 0, 0, tempImage5, 1);
+            imagem16dnb.draw_image(-50, 0, 0, 0, tempImageDNB, 0.8);
+
+            imagem16dnb.mirror('x');
+        }
+        imagem16dnb.save_png("VIIRS-M16-DNB.png");
+    }
 
     data_in.close();
 }
