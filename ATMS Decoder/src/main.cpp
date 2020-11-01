@@ -261,17 +261,129 @@ int main(int argc, char *argv[])
         image346.draw_image(0, 0, 0, 1, image4);
         image346.draw_image(0, 0, 0, 2, image6);
     }
+    image346.equalize(1000);
     image346.save_png("ATMS-RGB-346.png");
 
-    std::cout << "221 Composite..." << std::endl;
-    cimg_library::CImg<unsigned short> image221(96, image1.height(), 1, 3);
+    std::cout << "335 Composite..." << std::endl;
+    cimg_library::CImg<unsigned short> image335(96, image1.height(), 1, 3);
     {
-        image221.draw_image(0, 0, 0, 0, image3);
-        image221.draw_image(0, 0, 0, 1, image4);
-        image221.draw_image(0, 0, 0, 2, image6);
+        image335.draw_image(0, 0, 0, 0, image3);
+        image335.draw_image(0, 0, 0, 1, image3);
+        image335.draw_image(0, 0, 0, 2, image5);
     }
-    image221.save_png("ATMS-RGB-221.png");
+    image335.equalize(1000);
+    image335.save_png("ATMS-RGB-335.png");
 
-    data_in.close();
+    std::cout << "4.3.17 Composite..." << std::endl;
+    cimg_library::CImg<unsigned short> image4317(96, image1.height(), 1, 3);
+    {
+        image4317.draw_image(0, 0, 0, 0, image4);
+        image4317.draw_image(0, 0, 0, 1, image3);
+        image4317.draw_image(0, 0, 0, 2, image17);
+    }
+    image4317.equalize(1000);
+    image4317.save_png("ATMS-RGB-4.3.17.png");
+
+    std::cout << "445 Composite..." << std::endl;
+    cimg_library::CImg<unsigned short> image445(96, image1.height(), 1, 3);
+    {
+        image445.draw_image(0, 0, 0, 0, image4);
+        image445.draw_image(0, 0, 0, 1, image4);
+        image445.draw_image(0, 0, 0, 2, image5);
+    }
+    image445.equalize(1000);
+    image445.save_png("ATMS-RGB-445.png");
+
+    std::cout << "4.4.17 Composite..." << std::endl;
+    cimg_library::CImg<unsigned short> image4417(96, image1.height(), 1, 3);
+    {
+        image4417.draw_image(0, 0, 0, 0, image4);
+        image4417.draw_image(0, 0, 0, 1, image4);
+        image4417.draw_image(0, 0, 0, 2, image17);
+    }
+    image4417.equalize(1000);
+    image4417.save_png("ATMS-RGB-4.4.17.png");
+
+    std::cout << "4.16.17 Composite..." << std::endl;
+    cimg_library::CImg<unsigned short> image41617(96, image1.height(), 1, 3);
+    {
+        image41617.draw_image(0, 0, 0, 0, image4);
+        image41617.draw_image(0, 0, 0, 1, image16);
+        image41617.draw_image(0, 0, 0, 2, image17);
+    }
+    image41617.equalize(1000);
+    image41617.save_png("ATMS-RGB-4.16.17.png");
+
+    std::cout << "3.4.17 Composite..." << std::endl;
+    cimg_library::CImg<unsigned short> image3417(96, image1.height(), 1, 3);
+    {
+        image3417.draw_image(0, 0, 0, 0, image3);
+        image3417.draw_image(0, 0, 0, 1, image4);
+        image3417.draw_image(0, 0, 0, 2, image17);
+    }
+    image3417.equalize(1000);
+    image3417.save_png("ATMS-RGB-3.4.17.png");
+
+    std::cout << "5.5.17 Composite..." << std::endl;
+    cimg_library::CImg<unsigned short> image5517(96, image1.height(), 1, 3);
+    {
+        image5517.draw_image(0, 0, 0, 0, image5);
+        image5517.draw_image(0, 0, 0, 1, image5);
+        image5517.draw_image(0, 0, 0, 2, image17);
+    }
+    image5517.equalize(1000);
+    image5517.save_png("ATMS-RGB-5.5.17.png");
+
+    std::cout << "6.4.17 Composite..." << std::endl;
+    cimg_library::CImg<unsigned short> image6417(96, image1.height(), 1, 3);
+    {
+        image6417.draw_image(0, 0, 0, 0, image6);
+        image6417.draw_image(0, 0, 0, 1, image4);
+        image6417.draw_image(0, 0, 0, 2, image17);
+    }
+    image6417.equalize(1000);
+    image6417.save_png("ATMS-RGB-6.4.17.png");
+
+    std::cout << "16.4.17 Composite..." << std::endl;
+    cimg_library::CImg<unsigned short> image16417(96, image1.height(), 1, 3);
+    {
+        image16417.draw_image(0, 0, 0, 0, image16);
+        image16417.draw_image(0, 0, 0, 1, image4);
+        image16417.draw_image(0, 0, 0, 2, image17);
+    }
+    image16417.equalize(1000);
+    image16417.save_png("ATMS-RGB-16.4.17.png");
+
+    std::cout << "17.16.6 Composite..." << std::endl;
+    cimg_library::CImg<unsigned short> image17166(96, image1.height(), 1, 3);
+    {
+        image17166.draw_image(0, 0, 0, 0, image17);
+        image17166.draw_image(0, 0, 0, 1, image16);
+        image17166.draw_image(0, 0, 0, 2, image6);
+    }
+    image17166.equalize(1000);
+    image17166.save_png("ATMS-RGB-17.16.6.png");
+
+    // Output a few nice composites as well
+    std::cout << "Global Composite..." << std::endl;
+    cimg_library::CImg<unsigned short> imageRgbAll(96 * 6, image1.height() * 2, 1, 3);
+    {
+        // Row 1
+        imageRgbAll.draw_image(96 * 0, 0, 0, 0, image346);
+        imageRgbAll.draw_image(96 * 1, 0, 0, 0, image335);
+        imageRgbAll.draw_image(96 * 2, 0, 0, 0, image4317);
+        imageRgbAll.draw_image(96 * 3, 0, 0, 0, image445);
+        imageRgbAll.draw_image(96 * 4, 0, 0, 0, image4417);
+        imageRgbAll.draw_image(96 * 5, 0, 0, 0, image41617);
+
+        // Row 2
+        imageRgbAll.draw_image(96 * 0, image1.height(), 0, 0, image3417);
+        imageRgbAll.draw_image(96 * 1, image1.height(), 0, 0, image5517);
+        imageRgbAll.draw_image(96 * 2, image1.height(), 0, 0, image6417);
+        imageRgbAll.draw_image(96 * 3, image1.height(), 0, 0, image16417);
+        imageRgbAll.draw_image(96 * 4, image1.height(), 0, 0, image17166);
+    }
+    imageRgbAll.save_png("ATMS-RGB-ALL.png");
+
     data_out.close();
 }
