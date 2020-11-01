@@ -145,7 +145,7 @@ struct Detector
 
         bitSlicer(data_payload, data_payload_size, fill_data);
 
-        if (size - checksum_offset > 8)
+        if (data_payload_size - checksum_offset > 8)
         {
             checksum = data[checksum_offset + 0] << 24 |
                        data[checksum_offset + 1] << 16 |
