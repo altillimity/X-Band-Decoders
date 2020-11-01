@@ -88,4 +88,5 @@ The flowcharts require GNU Radio 3.8 or above.
 - Record a baseband 
 - Demodulate with HRD Demodulator
 - Process the soft symbols with HRD Decoder   
-- Run the resulting CADU file through the VIIRS Decoder  
+- Run the resulting CADU file through the VIIRS Decoder to get VIIRS (imager) data    
+- Run the resulting CADU file through the ATMS Decoder to get ATMS (microwave sounder) data    
