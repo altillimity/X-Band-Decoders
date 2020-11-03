@@ -252,6 +252,8 @@ int main(int argc, char *argv[])
     cimg_library::CImg<unsigned short> image221(1354 * 4, reader.lines * 4, 1, 3);
     {
         cimg_library::CImg<unsigned short> tempImage2 = reader.getImage250m(1), tempImage1 = reader.getImage250m(0);
+        tempImage2.equalize(1000);
+        tempImage1.equalize(1000);
         image221.draw_image(0, 0, 0, 0, tempImage2);
         image221.draw_image(0, 0, 0, 1, tempImage2);
         image221.draw_image(0, 0, 0, 2, tempImage1);
