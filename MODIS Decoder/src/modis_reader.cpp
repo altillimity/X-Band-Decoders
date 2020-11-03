@@ -1,6 +1,7 @@
 #include "modis_reader.h"
 
 #include <iostream>
+#include <map>
 
 #define DAY_GROUP 0b000
 #define NIGHT_GROUP 0b001
@@ -44,6 +45,13 @@ void MODISReader::processDayPacket(libccsds::CCSDSPacket &packet, MODISHeader &h
     //std::cout << (int)packet.header.sequence_flag << " " << (int)header.earth_frame_data_count << std::endl;
 
     int position = header.earth_frame_data_count - 1;
+
+    if (position == 0 && packet.header.sequence_flag == 1 && lastScanCount != header.scan_count)
+    {
+        lines += 10;
+    }
+
+    lastScanCount = header.scan_count;
 
     if (packet.header.sequence_flag == 1)
     {
@@ -139,11 +147,6 @@ void MODISReader::processDayPacket(libccsds::CCSDSPacket &packet, MODISHeader &h
             channels1000m[i][(lines + 0) * 1354 + position] = values[384 + i] * 15;
         }
     }
-
-    if (position == 0 && packet.header.sequence_flag == 1)
-        lines += 10;
-
-    lastScanCount = header.scan_count;
 }
 
 void MODISReader::processNightPacket(libccsds::CCSDSPacket &packet, MODISHeader &header)
@@ -153,6 +156,13 @@ void MODISReader::processNightPacket(libccsds::CCSDSPacket &packet, MODISHeader 
         return;
 
     int position = header.earth_frame_data_count;
+
+    if (position == 0 && packet.header.sequence_flag == 1 && lastScanCount != header.scan_count)
+    {
+        lines += 10;
+    }
+
+    lastScanCount = header.scan_count;
 
     std::vector<uint16_t> values = bytesTo12bits(packet.payload, 12, 1, 200);
 
@@ -170,12 +180,9 @@ void MODISReader::processNightPacket(libccsds::CCSDSPacket &packet, MODISHeader 
         channels1000m[14 + i][(lines + 1) * 1354 + position] = values[136 + i] * 15;
         channels1000m[14 + i][(lines + 0) * 1354 + position] = values[153 + i] * 15;
     }
-
-    if (lastScanCount != header.scan_count && header.scan_count - lastScanCount < 3)
-        lines += 10;
-
-    lastScanCount = header.scan_count;
 }
+
+int i = 0;
 
 void MODISReader::work(libccsds::CCSDSPacket &packet)
 {
@@ -184,6 +191,14 @@ void MODISReader::work(libccsds::CCSDSPacket &packet)
         return;
 
     MODISHeader modisHeader(packet);
+
+    // Check day validity
+    if (modisHeader.day_count != common_day)
+        return;
+
+    // Check ms validity, allowing a 10% margin
+    if (modisHeader.coarse_time > common_coarse + (common_coarse / 10) || modisHeader.coarse_time < common_coarse - (common_coarse / 10))
+        return;
 
     if (modisHeader.packet_type == DAY_GROUP)
     {

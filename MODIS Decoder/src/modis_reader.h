@@ -2,6 +2,7 @@
 
 #include <ccsds/ccsds.h>
 #include <cmath>
+#include <map>
 #define cimg_use_png
 #define cimg_display 0
 #include "CImg.h"
@@ -53,4 +54,7 @@ public:
     cimg_library::CImg<unsigned short> getImage250m(int channel);
     cimg_library::CImg<unsigned short> getImage500m(int channel);
     cimg_library::CImg<unsigned short> getImage1000m(int channel);
+
+    uint16_t common_day;
+    uint32_t common_coarse;
 };

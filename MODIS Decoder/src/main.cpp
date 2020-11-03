@@ -16,6 +16,20 @@ size_t getFilesize(std::string filepath)
     return fileSize;
 }
 
+template <class InputIt, class T = typename std::iterator_traits<InputIt>::value_type>
+T most_common(InputIt begin, InputIt end)
+{
+    std::map<T, int> counts;
+    for (InputIt it = begin; it != end; ++it)
+    {
+        if (counts.find(*it) != counts.end())
+            ++counts[*it];
+        else
+            counts[*it] = 1;
+    }
+    return std::max_element(counts.begin(), counts.end(), [](const std::pair<T, int> &pair1, const std::pair<T, int> &pair2) { return pair1.second < pair2.second; })->first;
+}
+
 // IO files
 std::ifstream data_in;
 std::ofstream data_out;
@@ -56,11 +70,81 @@ int main(int argc, char *argv[])
     std::cout << "---------------------------" << std::endl;
     std::cout << std::endl;
 
+    std::cout << "Computing time statistics for filtering..." << std::endl;
+
+    // Time values
+    uint16_t common_day;
+    uint32_t common_coarse;
+
+    // Compute time statistics for filtering later on.
+    // The idea of doing it that way originates from Fred's weathersat software (readbin_modis)
+    {
+        std::vector<uint16_t> dayCounts;
+        std::vector<uint32_t> coarseCounts;
+
+        std::ifstream data_in_tmp(argv[1], std::ios::binary);
+        libccsds::Demuxer ccsdsDemuxer;
+
+        while (!data_in_tmp.eof())
+        {
+            // Read buffer
+            data_in_tmp.read((char *)&cadu, 1024);
+
+            // Parse this transport frame
+            libccsds::VCDU vcdu = libccsds::parseVCDU(cadu);
+
+            // Right channel? (VCID 30/42 is MODIS)
+            if (vcdu.vcid == (terra ? 42 : 30))
+            {
+                modis_cadu++;
+
+                // Demux
+                std::vector<libccsds::CCSDSPacket> ccsdsFrames = ccsdsDemuxer.work(cadu);
+
+                // Push into processor (filtering APID 64)
+                for (libccsds::CCSDSPacket &pkt : ccsdsFrames)
+                {
+                    if (pkt.header.apid == 64)
+                    {
+                        // Filter out bad packets
+                        if (pkt.payload.size() < 10)
+                            continue;
+
+                        MODISHeader modisHeader(pkt);
+
+                        // Store all parse values
+                        dayCounts.push_back(modisHeader.day_count);
+                        coarseCounts.push_back(modisHeader.coarse_time);
+                    }
+                }
+            }
+
+            // Show our progress
+            std::cout << "\rProgress : " << round(((float)data_in_tmp.tellg() / (float)filesize) * 1000.0f) / 10.0f << "%     " << std::flush;
+        }
+
+        data_in_tmp.close();
+
+        // Compute the most recurrent value
+        common_day = most_common(dayCounts.begin(), dayCounts.end());
+        common_coarse = most_common(coarseCounts.begin(), coarseCounts.end());
+
+        std::cout << std::endl;
+        std::cout << std::endl;
+
+        std::cout << "Detected year         : " << 1958 + (common_day / 365.25) << std::endl;
+        std::cout << "Detected coarse time  : " << common_coarse << std::endl;
+    }
+
+    std::cout << std::endl;
+
     std::cout << "Demultiplexing and deframing..." << std::endl;
 
     libccsds::Demuxer ccsdsDemuxer;
 
     MODISReader reader;
+    reader.common_day = common_day;
+    reader.common_coarse = common_coarse;
 
     // Read until EOF
     while (!data_in.eof())
