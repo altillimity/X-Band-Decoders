@@ -13,3 +13,5 @@ find_package(Threads REQUIRED)
 target_link_libraries(HRD-Decoder PUBLIC Threads::Threads)
 
 target_link_libraries (HRD-Decoder PUBLIC "correct")
+
+install(TARGETS HRD-Decoder DESTINATION bin)

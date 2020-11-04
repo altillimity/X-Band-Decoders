@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 3.0.0)
 
-project (AQUADecoder)
-file(GLOB_RECURSE AQUADecoder_CPPS src/*.cpp)
+project (AQUA-Decoder)
+file(GLOB_RECURSE AQUA-Decoder_CPPS src/*.cpp)
 
 if(APPLE)
     include_directories(/usr/local/include)
@@ -9,12 +9,12 @@ if(APPLE)
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 endif()
 
-add_executable(AQUADecoder ${AQUADecoder_CPPS})
+add_executable(AQUA-Decoder ${AQUA-Decoder_CPPS})
 
-target_include_directories(AQUADecoder PUBLIC src)
+target_include_directories(AQUA-Decoder PUBLIC src)
 
-target_link_libraries(AQUADecoder PUBLIC m)
+target_link_libraries(AQUA-Decoder PUBLIC m)
 
-target_link_libraries (AQUADecoder PUBLIC "correct")
+target_link_libraries (AQUA-Decoder PUBLIC "correct")
 
-install(TARGETS AQUADecoder DESTINATION bin)
+install(TARGETS AQUA-Decoder DESTINATION bin)
