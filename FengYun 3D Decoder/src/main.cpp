@@ -88,16 +88,18 @@ int main(int argc, char *argv[])
     uint8_t *viterbi1_out = new uint8_t[BUFFER_SIZE];
     uint8_t *viterbi2_out = new uint8_t[BUFFER_SIZE];
 
-    // A few vectors for processing
-    std::vector<std::complex<float>> *iSamples = new std::vector<std::complex<float>>(BUFFER_SIZE),
-                                     *qSamples = new std::vector<std::complex<float>>(BUFFER_SIZE);
+    // A few buffers for processing
+    std::complex<float> *iSamples = new std::complex<float>[BUFFER_SIZE],
+                        *qSamples = new std::complex<float>[BUFFER_SIZE];
+    int inI = 0, inQ = 0;
 
     // Read buffer
     std::complex<float> buffer[BUFFER_SIZE];
     int8_t *soft_buffer = new int8_t[BUFFER_SIZE * 2];
 
     // Diff decoder input and output
-    std::vector<uint8_t> *diff_in = new std::vector<uint8_t>, *diff_out = new std::vector<uint8_t>;
+    uint8_t *diff_in = new uint8_t[BUFFER_SIZE], *diff_out = new uint8_t[BUFFER_SIZE];
+    int inDiff = 0;
 
     // Complete filesize
     size_t filesize = getFilesize(argv[argc - 2]);
@@ -135,18 +137,22 @@ int main(int argc, char *argv[])
             buffer[i] = ((float)soft_buffer[i * 2 + 1] / 127.0f) + ((float)soft_buffer[i * 2] / 127.0f) * 1if;
         }
 
+        inQ = 0;
+        inI = 0;
+
         // Deinterleave I & Q for the 2 Viterbis
         for (int i = 0; i < BUFFER_SIZE / 2; i++)
         {
             using namespace std::complex_literals;
             std::complex<float> iS = buffer[i * 2 + shift].imag() + buffer[i * 2 + 1 + shift].imag() * 1if;
             std::complex<float> qS = buffer[i * 2 + shift].real() + buffer[i * 2 + 1 + shift].real() * 1if;
-            iSamples->push_back(iS);
-            qSamples->push_back(-qS); //FY3D
+            iSamples[inI++] = iS;
+            qSamples[inQ++] = -qS; //FY3D
         }
+
         // Run Viterbi!
-        v1_fut = viterbi_pool.push([&](int) { v1 = viterbi1.work(*qSamples, qSamples->size(), viterbi1_out); });
-        v2_fut = viterbi_pool.push([&](int) { v2 = viterbi2.work(*iSamples, iSamples->size(), viterbi2_out); });
+        v1_fut = viterbi_pool.push([&](int) { v1 = viterbi1.work(qSamples, inQ, viterbi1_out); });
+        v2_fut = viterbi_pool.push([&](int) { v2 = viterbi2.work(iSamples, inI, viterbi2_out); });
         v1_fut.get();
         v2_fut.get();
 
@@ -156,14 +162,14 @@ int main(int argc, char *argv[])
             if (v1 == v2 && v1 > 0)
             {
                 uint8_t bit1, bit2, bitCb;
+                inDiff = 0;
                 for (int y = 0; y < v1; y++)
                 {
                     for (int i = 7; i >= 0; i--)
                     {
                         bit1 = getBit<uint8_t>(viterbi1_out[y], i);
                         bit2 = getBit<uint8_t>(viterbi2_out[y], i);
-                        bitCb = bit2 << 1 | bit1;
-                        diff_in->push_back(bitCb);
+                        diff_in[inDiff++] = bit2 << 1 | bit1;
                     }
                 }
             }
@@ -178,21 +184,23 @@ int main(int argc, char *argv[])
             {
                 shift = 1;
             }
-            diff_in->clear();
-            iSamples->clear();
-            qSamples->clear();
+
+            inQ = 0;
+            inI = 0;
+
             // Deinterleave I & Q for the 2 Viterbis
             for (int i = 0; i < BUFFER_SIZE / 2; i++)
             {
                 using namespace std::complex_literals;
                 std::complex<float> iS = buffer[i * 2 + shift].imag() + buffer[i * 2 + 1 + shift].imag() * 1if;
                 std::complex<float> qS = buffer[i * 2 + shift].real() + buffer[i * 2 + 1 + shift].real() * 1if;
-                iSamples->push_back(iS);
-                qSamples->push_back(-qS); //FY3D
+                iSamples[inI++] = iS;
+                qSamples[inQ++] = -qS; //FY3D
             }
+
             // Run Viterbi!
-            v1_fut = viterbi_pool.push([&](int) { v1 = viterbi1.work(*qSamples, qSamples->size(), viterbi1_out); });
-            v2_fut = viterbi_pool.push([&](int) { v2 = viterbi2.work(*iSamples, iSamples->size(), viterbi2_out); });
+            v1_fut = viterbi_pool.push([&](int) { v1 = viterbi1.work(qSamples, inQ, viterbi1_out); });
+            v2_fut = viterbi_pool.push([&](int) { v2 = viterbi2.work(iSamples, inI, viterbi2_out); });
             v1_fut.get();
             v2_fut.get();
 
@@ -202,14 +210,14 @@ int main(int argc, char *argv[])
                 if (v1 == v2 && v1 > 0)
                 {
                     uint8_t bit1, bit2, bitCb;
+                    inDiff = 0;
                     for (int y = 0; y < v1; y++)
                     {
                         for (int i = 7; i >= 0; i--)
                         {
                             bit1 = getBit<uint8_t>(viterbi1_out[y], i);
                             bit2 = getBit<uint8_t>(viterbi2_out[y], i);
-                            bitCb = bit2 << 1 | bit1;
-                            diff_in->push_back(bitCb);
+                            diff_in[inDiff++] = bit2 << 1 | bit1;
                         }
                     }
                 }
@@ -228,17 +236,16 @@ int main(int argc, char *argv[])
         }
 
         // Perform differential decoding
-        *diff_out = diff.work(*diff_in);
+        int diff_size = diff.work(diff_in, inDiff, diff_out);
 
-        if (diff_out->size() > 0)
+        if (diff_size > 0)
         {
 
             inFrameBuffer = 0;
             // Reconstruct into bytes and write to output file
-            for (int i = 0; i < diff_out->size() / 4; i++)
+            for (int i = 0; i < diff_size / 4; i++)
             {
-                uint8_t toPush = ((*diff_out)[i * 4] << 6) | ((*diff_out)[i * 4 + 1] << 4) | ((*diff_out)[i * 4 + 2] << 2) | (*diff_out)[i * 4 + 3];
-                frameBuffer[inFrameBuffer++] = toPush;
+                frameBuffer[inFrameBuffer++] = diff_out[i * 4] << 6 | diff_out[i * 4 + 1] << 4 | diff_out[i * 4 + 2] << 2 | diff_out[i * 4 + 3];
             }
 
             // Deframe / derand
@@ -273,11 +280,6 @@ int main(int argc, char *argv[])
         else if (deframer.getState() > 6)
             std::cout << ", Deframer : SYNCED" << std::flush;
         std::cout << ", CADUs : " << (float)(data_out_total / 1024) << ", Data out : " << round(data_out_total / 1e5) / 10.0f << " MB, Progress : " << round(((float)data_in.tellg() / (float)filesize) * 1000.0f) / 10.0f << "%     " << std::flush;
-
-        // Clear everything for the next run
-        diff_in->clear();
-        iSamples->clear();
-        qSamples->clear();
     }
 
     std::cout << std::endl
