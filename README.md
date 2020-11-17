@@ -36,7 +36,8 @@ The flowcharts require GNU Radio 3.8 or above.
 - Record a baseband 
 - Demodulate with AQUA Demodulator
 - Process the soft symbols with Aqua Decoder   
-- Run the resulting CADU file through MODIS Decoder  
+- Run the resulting CADU file through MODIS Decoder     
+- Run the resulting CADU file through CERES Decoder (for CERES instrument data)     
 
 # Terra
 
@@ -50,6 +51,7 @@ The flowcharts require GNU Radio 3.8 or above.
 - Demodulate with TERRA Demodulator
 - Process the soft symbols with Terra Decoder   
 - Run the resulting CADU file through MODIS Decoder in Terra mode  
+- Run the resulting CADU file through CERES Decoder in Terra mode (for CERES instrument data)       
 
 # FengYun-3 A/B/C
 
