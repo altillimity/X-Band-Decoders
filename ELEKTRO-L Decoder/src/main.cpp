@@ -128,6 +128,56 @@ int main(int argc, char *argv[])
     cimg_library::CImg<unsigned short> image9 = msuReaderIR.getImage6();
     //cimg_library::CImg<unsigned short> imageIRRaw = msuReaderIR.getImageRaw();
 
+    //std::cout << "Channel RAW IR..." << std::endl;
+    //imageIRRaw.save_png("Elektro-RAW-IR.png");
+
+    std::cout << "321 Composite..." << std::endl;
+    cimg_library::CImg<unsigned short> image321(12008, 12008, 1, 3);
+    image321.draw_image(0, 1774 - 4400, 0, 0, image3);
+    image321.draw_image(-31, -23 - 4400, 0, 1, image2);
+    image321.draw_image(22, 3574 - 4400, 0, 2, image1);
+    image321.mirror('X');
+    image321.mirror('Y');
+    image321.save_png("Elektro-RGB-321.png");
+
+    std::cout << "221 Composite..." << std::endl;
+    cimg_library::CImg<unsigned short> image221(12008, 12008, 1, 3);
+    image221.draw_image(-31, -23 - 4400, 0, 0, image2);
+    image221.draw_image(-31, -23 - 4400, 0, 1, image2);
+    image221.draw_image(22, 3574 - 4400, 0, 2, image1);
+    image221.mirror('X');
+    image221.mirror('Y');
+    image221.save_png("Elektro-RGB-221.png");
+
+    std::cout << "332 Composite..." << std::endl;
+    cimg_library::CImg<unsigned short> image332(12008, 12008, 1, 3);
+    image332.draw_image(0, 1774 - 4400, 0, 0, image3);
+    image332.draw_image(0, 1774 - 4400, 0, 1, image3);
+    image332.draw_image(-31, -23 - 4400, 0, 2, image2);
+    image332.mirror('X');
+    image332.mirror('Y');
+    image332.save_png("Elektro-RGB-332.png");
+
+    // Flip
+    image1.mirror('X');
+    image2.mirror('X');
+    image3.mirror('X');
+    image4.mirror('X');
+    image5.mirror('X');
+    image6.mirror('X');
+    image7.mirror('X');
+    image8.mirror('X');
+    image9.mirror('X');
+    image1.mirror('Y');
+    image2.mirror('Y');
+    image3.mirror('Y');
+    image4.mirror('Y');
+    image5.mirror('Y');
+    image6.mirror('Y');
+    image7.mirror('Y');
+    image8.mirror('Y');
+    image9.mirror('Y');
+
     // Takes a while so we say how we're doing
     std::cout << "Channel 1..." << std::endl;
     image1.save_png("Elektro-1.png");
@@ -155,30 +205,6 @@ int main(int argc, char *argv[])
 
     std::cout << "Channel 9..." << std::endl;
     image9.save_png("Elektro-9.png");
-
-    //std::cout << "Channel RAW IR..." << std::endl;
-    //imageIRRaw.save_png("Elektro-RAW-IR.png");
-
-    std::cout << "321 Composite..." << std::endl;
-    cimg_library::CImg<unsigned short> image321(12008, 12008, 1, 3);
-    image321.draw_image(0, 1774 - 4400, 0, 0, image3);
-    image321.draw_image(-31, -23 - 4400, 0, 1, image2);
-    image321.draw_image(22, 3574 - 4400, 0, 2, image1);
-    image321.save_png("Elektro-RGB-321.png");
-
-    std::cout << "221 Composite..." << std::endl;
-    cimg_library::CImg<unsigned short> image221(12008, 12008, 1, 3);
-    image221.draw_image(-31, -23 - 4400, 0, 0, image2);
-    image221.draw_image(-31, -23 - 4400, 0, 1, image2);
-    image221.draw_image(22, 3574 - 4400, 0, 2, image1);
-    image221.save_png("Elektro-RGB-221.png");
-
-    std::cout << "332 Composite..." << std::endl;
-    cimg_library::CImg<unsigned short> image332(12008, 12008, 1, 3);
-    image332.draw_image(0, 1774 - 4400, 0, 0, image3);
-    image332.draw_image(0, 1774 - 4400, 0, 1, image3);
-    image332.draw_image(-31, -23 - 4400, 0, 2, image2);
-    image332.save_png("Elektro-RGB-332.png");
 
     data_in.close();
 }
