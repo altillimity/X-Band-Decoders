@@ -150,12 +150,14 @@ int main(int argc, char *argv[])
             iSamples[inI++] = iS;
             qSamples[inQ++] = -qS;
         }
-        
+
         // Run Viterbi!
         v1_fut = viterbi_pool.push([&](int) { v1 = viterbi1.work(qSamples, inQ, viterbi1_out); });
         v2_fut = viterbi_pool.push([&](int) { v2 = viterbi2.work(iSamples, inI, viterbi2_out); });
         v1_fut.get();
         v2_fut.get();
+
+        inDiff = 0;
 
         // Interleave and pack output into 2 bits chunks
         if (v1 > 0 || v2 > 0)
@@ -163,7 +165,6 @@ int main(int argc, char *argv[])
             if (v1 == v2 && v1 > 0)
             {
                 uint8_t bit1, bit2, bitCb;
-                inDiff = 0;
                 for (int y = 0; y < v1; y++)
                 {
                     for (int i = 7; i >= 0; i--)
@@ -205,13 +206,14 @@ int main(int argc, char *argv[])
             v1_fut.get();
             v2_fut.get();
 
+            inDiff = 0;
+
             // Interleave and pack output into 2 bits chunks
             if (v1 > 0 || v2 > 0)
             {
                 if (v1 == v2 && v1 > 0)
                 {
                     uint8_t bit1, bit2, bitCb;
-                    inDiff = 0;
                     for (int y = 0; y < v1; y++)
                     {
                         for (int i = 7; i >= 0; i--)
@@ -273,7 +275,10 @@ int main(int argc, char *argv[])
         }
 
         // Console stuff
-        std::cout << '\r' << "Viterbi 1 : " << (viterbi1.getState() == 0 ? "NO SYNC" : viterbi1.getState() == 1 ? "SYNCING" : "SYNCED") << ", Viterbi 2 : " << (viterbi2.getState() == 0 ? "NO SYNC" : viterbi2.getState() == 1 ? "SYNCING" : "SYNCED");
+        std::cout << '\r' << "Viterbi 1 : " << (viterbi1.getState() == 0 ? "NO SYNC" : viterbi1.getState() == 1 ? "SYNCING"
+                                                                                                                : "SYNCED")
+                  << ", Viterbi 2 : " << (viterbi2.getState() == 0 ? "NO SYNC" : viterbi2.getState() == 1 ? "SYNCING"
+                                                                                                          : "SYNCED");
         if (deframer.getState() == 0)
             std::cout << ", Deframer : NOSYNC" << std::flush;
         else if (deframer.getState() == 2 | deframer.getState() == 6)
