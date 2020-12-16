@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     CADUDeframer deframer(terra);
 
     // Complete filesize
-    size_t filesize = getFilesize(argv[argc - 2]);
+    size_t filesize = getFilesize(argv[2]);
 
     // Output and Input file
     data_in = std::ifstream(argv[1], std::ios::binary);
