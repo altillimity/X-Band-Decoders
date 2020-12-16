@@ -20,13 +20,22 @@ std::ofstream data_out;
 
 int main(int argc, char *argv[])
 {
-    if (argc != 3)
+    if (argc != 3 && argc != 4)
     {
-        std::cout << "Usage : " << argv[0] << " unsynchedrand.bin syncderand.bin" << std::endl;
+        std::cout << "Usage : " << argv[0] << " unsynchedrand.bin syncderand.bin [-t]" << std::endl;
         return 0;
     }
 
-    CADUDeframer deframer;
+    bool terra = false;
+
+    // Terra mode?
+    if (argc == 4)
+    {
+        if (std::string(argv[3]) == "-t")
+            terra = true;
+    }
+
+    CADUDeframer deframer(terra);
 
     // Complete filesize
     size_t filesize = getFilesize(argv[argc - 2]);

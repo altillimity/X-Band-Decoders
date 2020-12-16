@@ -31,8 +31,11 @@ private:
     // Found frame count
     int numFrames;
 
+    // Terra support
+    bool terra_mode;
+
 public:
-    CADUDeframer();
+    CADUDeframer(bool terra = false);
     // Get found frame count
     int getFrameCount();
     // Return state

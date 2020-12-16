@@ -28,8 +28,10 @@ int checkSyncMarker(uint32_t &marker, uint32_t totest)
     return errors;
 }
 
-CADUDeframer::CADUDeframer()
+CADUDeframer::CADUDeframer(bool terra)
 {
+    terra_mode = terra;
+
     // From gr-poes-weather (including comments!)
     unsigned char feedbk, randm = 0xff;
     // Original Polynomial is :  1 + x3 + x5 + x7 +x8
@@ -116,7 +118,17 @@ std::vector<std::array<uint8_t, CADU_SIZE>> CADUDeframer::work(uint8_t *input, s
                 // If we filled the buffer, output it
                 if (--wroteBits == 0)
                 {
-                    frameBuffer[wroteBytes] = outBuffer ^ d_rantab[wroteBytes];
+                    if (terra_mode)
+                    {
+                        if (wroteBytes >= 6 && wroteBytes < 896)
+                            frameBuffer[wroteBytes] = outBuffer ^ d_rantab[wroteBytes - 6];
+                        else
+                            frameBuffer[wroteBytes] = outBuffer;
+                    }
+                    else
+                    {
+                        frameBuffer[wroteBytes] = outBuffer ^ d_rantab[wroteBytes];
+                    }
                     wroteBytes++;
                     wroteBits = 8;
                 }
