@@ -12,6 +12,10 @@ Some projects will require (or / and) :
 
 The flowcharts require GNU Radio 3.8 or above.
 
+### Standalone Demodulators
+
+All flowcharts contained in this repository can be substitued with those standalone demodulators. It will be easier and faster to use for most users https://github.com/altillimity/Standalone-Demodulators.
+
 # ELEKTRO-L 2/3
 
 **Supported downlink :** RDAS, 7500Mhz    
