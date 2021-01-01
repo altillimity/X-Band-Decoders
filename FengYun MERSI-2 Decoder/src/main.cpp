@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     // MERSI Readers
     MERSI250Reader reader1, reader2, reader3, reader4, reader5, reader6;
     MERSI1000Reader reader7, reader8, reader9, reader10, reader11, reader12, reader13, reader14,
-        reader15, reader16, reader17, reader18, reader19, reader20, reader21, reader22, reader23, reader24;
+        reader15, reader16, reader17, reader18, reader19, reader20, reader21, reader22, reader23, reader24, reader25;
 
     // Graphics
     std::cout << "---------------------------" << std::endl;
@@ -84,64 +84,68 @@ int main(int argc, char *argv[])
                 mersiCorrelator->feedFrames(marker, frameVec);
 
                 //std::cout << marker << std::endl;
-                if (marker > 239)
+                if (marker >= 240)
                 {
                     m1000Frames++;
 
+                    marker -= 240;
+
                     // Demultiplex them all!
-                    if (marker > 39 + 40 * 5 && marker < 39 + 40 * 5 + 10)
+                    if (marker < 10 * 1)
                         reader7.pushFrame(frameVec);
-                    else if (marker > 39 + 40 * 5 + 10 * 2 && marker < 39 + 40 * 5 + 10 * (2 + 1))
+                    else if (marker >= 10 * 1 && marker < 10 * 2)
                         reader8.pushFrame(frameVec);
-                    else if (marker > 39 + 40 * 5 + 10 * 3 && marker < 39 + 40 * 5 + 10 * (3 + 1))
+                    else if (marker >= 10 * 2 && marker < 10 * 3)
                         reader9.pushFrame(frameVec);
-                    else if (marker > 39 + 40 * 5 + 10 * 4 && marker < 39 + 40 * 5 + 10 * (4 + 1))
+                    else if (marker >= 10 * 3 && marker < 10 * 4)
                         reader10.pushFrame(frameVec);
-                    else if (marker > 39 + 40 * 5 + 10 * 5 && marker < 39 + 40 * 5 + 10 * (5 + 1))
+                    else if (marker >= 10 * 4 && marker < 10 * 5)
                         reader11.pushFrame(frameVec);
-                    else if (marker > 39 + 40 * 5 + 10 * 6 && marker < 39 + 40 * 5 + 10 * (6 + 1))
+                    else if (marker >= 10 * 5 && marker < 10 * 6)
                         reader12.pushFrame(frameVec);
-                    else if (marker > 39 + 40 * 5 + 10 * 7 && marker < 39 + 40 * 5 + 10 * (7 + 1))
+                    else if (marker >= 10 * 6 && marker < 10 * 7)
                         reader13.pushFrame(frameVec);
-                    else if (marker > 39 + 40 * 5 + 10 * 8 && marker < 39 + 40 * 5 + 10 * (8 + 1))
+                    else if (marker >= 10 * 7 && marker < 10 * 8)
                         reader14.pushFrame(frameVec);
-                    else if (marker > 39 + 40 * 5 + 10 * 9 && marker < 39 + 40 * 5 + 10 * (9 + 1))
+                    else if (marker >= 10 * 8 && marker < 10 * 9)
                         reader15.pushFrame(frameVec);
-                    else if (marker > 39 + 40 * 5 + 10 * 10 && marker < 39 + 40 * 5 + 10 * (10 + 1))
+                    else if (marker >= 10 * 9 && marker < 10 * 10)
                         reader16.pushFrame(frameVec);
-                    else if (marker > 39 + 40 * 5 + 10 * 11 && marker < 39 + 40 * 5 + 10 * (11 + 1))
+                    else if (marker >= 10 * 10 && marker < 10 * 11)
                         reader17.pushFrame(frameVec);
-                    else if (marker > 39 + 40 * 5 + 10 * 12 && marker < 39 + 40 * 5 + 10 * (12 + 1))
+                    else if (marker >= 10 * 11 && marker < 10 * 12)
                         reader18.pushFrame(frameVec);
-                    else if (marker > 39 + 40 * 5 + 10 * 13 && marker < 39 + 40 * 5 + 10 * (13 + 1))
+                    else if (marker >= 10 * 12 && marker < 10 * 13)
                         reader19.pushFrame(frameVec);
-                    else if (marker > 39 + 40 * 5 + 10 * 14 && marker < 39 + 40 * 5 + 10 * (14 + 1))
+                    else if (marker >= 10 * 13 && marker < 10 * 14)
                         reader20.pushFrame(frameVec);
-                    else if (marker > 39 + 40 * 5 + 10 * 15 && marker < 39 + 40 * 5 + 10 * (15 + 1))
+                    else if (marker >= 10 * 14 && marker < 10 * 15)
                         reader21.pushFrame(frameVec);
-                    else if (marker > 39 + 40 * 5 + 10 * 16 && marker < 39 + 40 * 5 + 10 * (16 + 1))
+                    else if (marker >= 10 * 15 && marker < 10 * 16)
                         reader22.pushFrame(frameVec);
-                    else if (marker > 39 + 40 * 5 + 10 * 17 && marker < 39 + 40 * 5 + 10 * (17 + 1))
+                    else if (marker >= 10 * 16 && marker < 10 * 17)
                         reader23.pushFrame(frameVec);
-                    else if (marker > 39 + 40 * 5 + 10 * 18 && marker < 39 + 40 * 5 + 10 * (18 + 1))
+                    else if (marker >= 10 * 17 && marker < 10 * 18)
                         reader24.pushFrame(frameVec);
+                    else if (marker >= 10 * 18 && marker < 10 * 19)
+                        reader25.pushFrame(frameVec);
                 }
-                else if (marker <= 239)
+                else if (marker < 240)
                 {
                     m250Frames++;
 
                     // Demux those lonely 250m ones
-                    if (marker < 39)
+                    if (marker < 40 * 1)
                         reader1.pushFrame(frameVec);
-                    else if (marker > 39 && marker < 39 + 40)
+                    else if (marker >= 40 * 1 && marker < 40 * 2)
                         reader2.pushFrame(frameVec);
-                    else if (marker > 39 + 40 && marker < 39 + 40 + 40)
+                    else if (marker >= 40 * 2 && marker < 40 * 3)
                         reader3.pushFrame(frameVec);
-                    else if (marker > 39 + 40 * 2 && marker < 39 + 40 * (2 + 1))
+                    else if (marker >= 40 * 3 && marker < 40 * 4)
                         reader4.pushFrame(frameVec);
-                    else if (marker > 39 + 40 * 3 && marker < 39 + 40 * (3 + 1))
+                    else if (marker >= 40 * 4 && marker < 40 * 5)
                         reader5.pushFrame(frameVec);
-                    else if (marker > 39 + 40 * 4 && marker < 39 + 40 * (4 + 1))
+                    else if (marker >= 40 * 5 && marker < 40 * 6)
                         reader6.pushFrame(frameVec);
                 }
             }
@@ -190,6 +194,7 @@ int main(int argc, char *argv[])
     cimg_library::CImg<unsigned short> image22 = reader22.getImage();
     cimg_library::CImg<unsigned short> image23 = reader23.getImage();
     cimg_library::CImg<unsigned short> image24 = reader24.getImage();
+    cimg_library::CImg<unsigned short> image25 = reader25.getImage();
 
     // Do it for our correlated ones
     mersiCorrelator->makeImages();
@@ -219,6 +224,7 @@ int main(int argc, char *argv[])
     image22.mirror('y');
     image23.mirror('y');
     image24.mirror('y');
+    image25.mirror('y');
 
     // Takes a while so we say how we're doing
     std::cout << "Channel 1..." << std::endl;
@@ -292,6 +298,9 @@ int main(int argc, char *argv[])
 
     std::cout << "Channel 24..." << std::endl;
     image24.save_png("MERSI2-24.png");
+
+    std::cout << "Channel 25..." << std::endl;
+    image25.save_png("MERSI2-25.png");
 
     // Output a few nice composites as well
     std::cout << "221 Composite..." << std::endl;
@@ -444,9 +453,6 @@ int main(int argc, char *argv[])
     std::cout << "Channel 18 (synced for composites)..." << std::endl;
     mersiCorrelator->image18.save_png("MERSI2-SYNCED-18.png");
 
-    std::cout << "Channel 18 (synced for composites)..." << std::endl;
-    mersiCorrelator->image18.save_png("MERSI2-SYNCED-18.png");
-
     std::cout << "Channel 19 (synced for composites)..." << std::endl;
     mersiCorrelator->image19.save_png("MERSI2-SYNCED-19.png");
 
@@ -464,6 +470,9 @@ int main(int argc, char *argv[])
 
     std::cout << "Channel 24 (synced for composites)..." << std::endl;
     mersiCorrelator->image24.save_png("MERSI2-SYNCED-24.png");
+
+    std::cout << "Channel 25 (synced for composites)..." << std::endl;
+    mersiCorrelator->image25.save_png("MERSI2-SYNCED-25.png");
 
     data_in.close();
 }

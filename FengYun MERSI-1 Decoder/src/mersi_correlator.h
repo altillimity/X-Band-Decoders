@@ -15,7 +15,7 @@ private:
     void processScan();
     MERSI250Reader reader1, reader2, reader3, reader4, reader5;
     MERSI1000Reader reader6, reader7, reader8, reader9, reader10, reader11, reader12, reader13, reader14,
-        reader15;
+        reader15, reader16, reader17, reader18, reader19, reader20;
 
 public:
     int complete, incomplete;
@@ -42,4 +42,9 @@ public:
     cimg_library::CImg<unsigned short> image13;
     cimg_library::CImg<unsigned short> image14;
     cimg_library::CImg<unsigned short> image15;
+    cimg_library::CImg<unsigned short> image16;
+    cimg_library::CImg<unsigned short> image17;
+    cimg_library::CImg<unsigned short> image18;
+    cimg_library::CImg<unsigned short> image19;
+    cimg_library::CImg<unsigned short> image20;
 };

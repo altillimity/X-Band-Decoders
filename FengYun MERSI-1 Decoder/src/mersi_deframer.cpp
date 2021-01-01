@@ -89,11 +89,11 @@ std::vector<std::vector<uint8_t>> MersiDeframer::work(std::vector<uint8_t> &data
                 {
                     int marker = (frameBuffer[3] % (int)pow(2, 3)) << 7 | frameBuffer[4] >> 1;
                     //std::cout << marker << std::endl;
-                    if (marker > 199)
+                    if (marker >= 200)
                     {
                         currentFrameSize = 25392;
                     }
-                    else if (marker <= 199)
+                    else if (marker < 200)
                     {
                         currentFrameSize = 99120;
                     }
