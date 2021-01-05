@@ -3,20 +3,17 @@
  *
  *  Created on: 25/01/2017
  *      Author: Lucas Teske
+ *      Modified by Aang23
  */
-
-#ifndef SRC_DIFFERENTIALDECODER_H_
-#define SRC_DIFFERENTIALDECODER_H_
 
 #include <cstdint>
 
-namespace SatHelper {
+class NRZMDiff
+{
+private:
+    uint8_t mask;
+    uint8_t lastBit = 0;
 
-    class DifferentialEncoding {
-    public:
-        static void nrzmDecode(uint8_t *data, int length);
-    };
-
-} /* namespace SatHelper */
-
-#endif /* SRC_DIFFERENTIALDECODER_H_ */
+public:
+    void decode(uint8_t *data, int length);
+};

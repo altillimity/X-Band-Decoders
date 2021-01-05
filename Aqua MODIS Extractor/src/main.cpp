@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
             // If this at least our second run and there's still stuff to write from previous frame, do it.
             if (ccsds > 0 && 642 - inModisDayBuffer > 0)
             {
-                int toWrite = 642 - inModisDayBuffer;
+                unsigned int toWrite = 642 - inModisDayBuffer;
                 //std::cout << toWrite << std::endl;
                 std::memcpy(&modisDayBuffer[inModisDayBuffer], &mpdu.data[0], toWrite);
                 inModisDayBuffer += toWrite;
@@ -152,8 +152,10 @@ int main(int argc, char *argv[])
                 writePacket();
 
             // Parse first CCSDS header
-            int firstHeaderPointer = mpdu.first_header_pointer;
+            unsigned int firstHeaderPointer = mpdu.first_header_pointer;
             CCSDSHeader firstHeader = parseCCSDSHeader(&mpdu.data[firstHeaderPointer]);
+
+            firstHeader.packet_length = 635;
 
             // Check if this frames contains more than one CCSDS header
             bool hasSecondHeader = 884 >= firstHeaderPointer + firstHeader.packet_length + 7;
@@ -162,21 +164,21 @@ int main(int argc, char *argv[])
             if (hasSecondHeader)
             {
                 // Compute second header
-                int secondHeaderPointer = firstHeaderPointer + firstHeader.packet_length + 7;
+                unsigned int secondHeaderPointer = firstHeaderPointer + firstHeader.packet_length + 7;
                 CCSDSHeader secondHeader = parseCCSDSHeader(&mpdu.data[secondHeaderPointer]);
                 //std::cout << firstHeader.apid << " " << secondHeader.apid << std::endl;
-
+                
                 // Write first frame out if it matches
-                if (firstHeader.apid == 64 && firstHeaderPointer < 884)
+                if (firstHeader.apid == 64 && firstHeaderPointer < 2047)
                 {
                     std::memcpy(modisDayBuffer, &mpdu.data[firstHeaderPointer], 642);
                     inModisDayBuffer += 642;
-                    writePacket();
-                    ccsds++;
+                   writePacket();
+                   ccsds++;
                 }
 
                 // Write second frame out if it matches
-                if (secondHeader.apid == 64 && secondHeaderPointer < 884)
+                if (secondHeader.apid == 64 && secondHeaderPointer < 2047)
                 {
                     std::memcpy(modisDayBuffer, &mpdu.data[secondHeaderPointer], 884 - secondHeaderPointer);
                     inModisDayBuffer += 884 - secondHeaderPointer;
@@ -186,13 +188,12 @@ int main(int argc, char *argv[])
             else
             {
                 // Write frame out if it matches
-                if (firstHeader.apid == 64 && firstHeaderPointer < 884)
+                if (firstHeader.apid == 64 && firstHeaderPointer < 2047)
                 {
-                    std::cout << 884 - firstHeaderPointer << std::endl;
-                    //std::cout << firstHeader.apid << std::endl;
-                    std::memcpy(modisDayBuffer, &mpdu.data[firstHeaderPointer], 884 - firstHeaderPointer);
-                    inModisDayBuffer = 884 - firstHeaderPointer; // Supposed to be += but compiler bug!?
-                    ccsds++;
+                   //std::cout << firstHeader.apid << std::endl;
+                  std::memcpy(modisDayBuffer, &mpdu.data[firstHeaderPointer], 884 - firstHeaderPointer);
+                 inModisDayBuffer += 884 - firstHeaderPointer;
+                 ccsds++;
                 }
             }
         }
