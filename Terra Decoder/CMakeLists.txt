@@ -16,3 +16,6 @@ target_include_directories(TERRA-Decoder PUBLIC src)
 target_link_libraries(TERRA-Decoder PUBLIC m)
 
 target_link_libraries (TERRA-Decoder PUBLIC "correct")
+
+
+install(TARGETS TERRA-Decoder DESTINATION bin)
