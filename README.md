@@ -41,7 +41,8 @@ All flowcharts contained in this repository can be substitued with those standal
 - Demodulate with AQUA Demodulator
 - Process the soft symbols with Aqua Decoder   
 - Run the resulting CADU file through MODIS Decoder     
-- Run the resulting CADU file through CERES Decoder (for CERES instrument data)     
+- Run the resulting CADU file through CERES Decoder (for CERES instrument data)   
+- Run the resulting CADU file through Aqua AMSU Decoder (for AMSU-A1/A2 instrument data)     
 
 # Terra
 
